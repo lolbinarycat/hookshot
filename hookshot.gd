@@ -11,7 +11,7 @@ signal hs_miss #sent when the hookshot retracts without hitting anything
 enum {INACTIVE,EXTENDING,RETRACTING,PULLING} #pulling = hookshot hit a wall
 var hs_state = INACTIVE #what is the hookshot doing
 var hs_dist = 0 #how far is the end of the hookshot away from the player
-enum {LEFT,RIGHT,UP,DOWN}
+#enum {LEFT,RIGHT,UP,DOWN}
 var hs_dir 
 var hs_dir_buffer = 0.0 #timer for how long you have to press a button after using the hookshot
 var hs_speed
@@ -19,19 +19,19 @@ var hs_time = 0.0
 
 func get_direction():
 	if Input.is_action_pressed("ui_left"):
-		return LEFT
+		return Gconst.LEFT
 	elif Input.is_action_pressed("ui_right"):
-		return RIGHT
+		return Gconst.RIGHT
 	elif Input.is_action_pressed("ui_up"):
-		return UP
+		return Gconst.UP
 
 func start_hs(delta):
 	hs_state = EXTENDING
-	if hs_dir == RIGHT: #you transfer your momentum into the hookshot
+	if hs_dir == Gconst.RIGHT: #you transfer your momentum into the hookshot
 		hs_speed = (get_parent().velocity.x + MIN_SPEED) * delta
-	elif hs_dir == LEFT:
+	elif hs_dir == Gconst.LEFT:
 		hs_speed = (-get_parent().velocity.x + MIN_SPEED) * delta
-	elif hs_dir == UP:
+	elif hs_dir == Gconst.UP:
 		hs_speed = (get_parent().velocity.y + MIN_SPEED) * delta
 	if hs_speed <= MIN_SPEED:
 		hs_speed = MIN_SPEED	
@@ -79,11 +79,11 @@ func _process(delta):
 	elif hs_time > MAX_TIME:
 		hs_state = RETRACTING
 		
-	if hs_dir == RIGHT: #decide where to put hs head based on orientation and distance 
+	if hs_dir == Gconst.RIGHT: #decide where to put hs head based on orientation and distance 
 		position.x = hs_dist
-	elif hs_dir == LEFT:
+	elif hs_dir == Gconst.LEFT:
 		position.x = -hs_dist
-	elif hs_dir == UP:
+	elif hs_dir == Gconst.UP:
 		position.y = -hs_dist
 		position.x = 0
 #	pass

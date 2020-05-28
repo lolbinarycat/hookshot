@@ -26,5 +26,7 @@ func _process(delta):
 			set_rotation_degrees(90)
 		elif hs.hs_dir == Gconst.LEFT:
 			set_rotation_degrees(0)
+		elif hs.hs_dir == Gconst.DOWN:
+			set_rotation_degrees(270)
 			
 #	pass
