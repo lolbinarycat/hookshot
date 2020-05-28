@@ -24,6 +24,8 @@ func get_direction():
 		return Gconst.RIGHT
 	elif Input.is_action_pressed("ui_up"):
 		return Gconst.UP
+	elif Input.is_action_pressed("ui_down"):
+		return Gconst.DOWN
 
 func start_hs(delta):
 	hs_state = EXTENDING
@@ -33,6 +35,8 @@ func start_hs(delta):
 		hs_speed = (-get_parent().velocity.x + MIN_SPEED) * delta
 	elif hs_dir == Gconst.UP:
 		hs_speed = (get_parent().velocity.y + MIN_SPEED) * delta
+	elif hs_dir == Gconst.DOWN:
+		hs_speed = (-get_parent().velocity.y + MIN_SPEED) * delta		
 	if hs_speed <= MIN_SPEED:
 		hs_speed = MIN_SPEED	
 	emit_signal("hs_extend")
@@ -53,7 +57,11 @@ func _process(delta):
 				hs_dir_buffer = 5
 		elif hs_state == EXTENDING:
 			hs_state = RETRACTING
-	if Input.is_action_pressed("hookshot") and hs_dir_buffer > 0:
+#		elif hs_state == PULLING:
+#			hs_state = INACTIVE
+#			hs_dist = 0
+#			emit_signal("hs_miss")
+	elif Input.is_action_pressed("hookshot") and hs_dir_buffer > 0:
 		hs_dir = get_direction()
 		if hs_dir == null:
 			hs_dir_buffer -= delta
@@ -79,6 +87,12 @@ func _process(delta):
 	elif hs_time > MAX_TIME:
 		hs_state = RETRACTING
 		
+	if hs_state == INACTIVE:
+		hs_dist = 0
+		position = Vector2(0,0)
+		hs_speed = 0
+		hs_time = MAX_TIME
+		
 	if hs_dir == Gconst.RIGHT: #decide where to put hs head based on orientation and distance 
 		position.x = hs_dist
 	elif hs_dir == Gconst.LEFT:
@@ -86,6 +100,8 @@ func _process(delta):
 	elif hs_dir == Gconst.UP:
 		position.y = -hs_dist
 		position.x = 0
+	elif hs_dir == Gconst.DOWN:
+		position.y = hs_dist
 #	pass
 
 

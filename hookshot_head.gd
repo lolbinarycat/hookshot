@@ -28,6 +28,9 @@ func _physics_process(delta):
 		elif hs_dir == Gconst.UP:
 			position.y = 10
 			collision = move_and_collide(Vector2(0,-10))
+		elif hs_dir == Gconst.DOWN:
+			position.y = -10
+			collision = move_and_collide(Vector2(0,10))
 		if collision:
 			emit_signal("hs_hit",hs_dir)
 			#print_debug("sending hs_hit signal")

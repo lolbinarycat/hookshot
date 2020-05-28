@@ -1,13 +1,13 @@
 extends KinematicBody2D
 
-const JUMP_HEIGHT = 120
+const JUMP_HEIGHT = 250
 const WALL_JUMP_HEIGHT = 150
 const WALL_JUMP_WIDTH = 70
 const RUN_SPEED = 20
 const FRICTION = 1.09
 const AIR_FRICTION =1.01
 const AIR_SPEED = 4
-const GRAVITY = 5.0
+const GRAVITY = 7.5
 const IS_PLAYER = true
 
 signal stop_hs
@@ -27,6 +27,11 @@ enum {RIGHT, LEFT, NONE}
 var lastWallDir = NONE
 var hs_active = false
 var hs_pulling = false
+
+func go_to_spawnpoint():
+	get_tree().reload_current_scene()
+	#velocity = Vector2(0,0)
+	#global_position = global_position + Vector2(4,0) #= get_parent().global_position
 
 func get_which_wall_collided():
 	for i in range(get_slide_count()):
@@ -91,8 +96,9 @@ func _physics_process(delta):
 			velocity.y = velocity.y + fallspeed
 			velocity.x = velocity.x / AIR_FRICTION
 		
-	if timeFromGround < 0.1:
+	if timeFromGround < 0.2:
 		if Input.is_action_just_pressed("jump"):
+			emit_signal("stop_hs")
 			velocity.y = -JUMP_HEIGHT
 	# start walljump proccesing
 	if is_on_wall():
@@ -107,11 +113,18 @@ func _physics_process(delta):
 			velocity.x = -WALL_JUMP_WIDTH
 		elif lastWallDir == LEFT:
 			velocity.x = WALL_JUMP_WIDTH
+			
+	#spikes
+	#if is_on_wall() or is_on_ceiling() or is_on_floor():
+	#	if get_node(Gconst.TILEMAP_PATH).get_cellv(position) == 2:
+	#		die()
+		
 	
 
 
 func _on_hookshot_hs_extend():
 	hs_active = true
+	velocity = Vector2(0,0)
 
 
 func _on_hookshot_hs_miss():
@@ -125,9 +138,15 @@ func _on_hs_head_hs_hit(dir):
 	hs_active = true
 	hs_pulling = true
 	if dir == Gconst.RIGHT:
-		velocity = Vector2(Gconst.HS_PULL_SPEED,0)
+		velocity = Vector2(Gconst.HS_PULL_SPEED*2,0)
 	elif dir == Gconst.LEFT:
-		velocity = Vector2(-Gconst.HS_PULL_SPEED,0)
+		velocity = Vector2(-Gconst.HS_PULL_SPEED*2,0)
 	elif dir == Gconst.UP:
-		velocity = Vector2(0,-Gconst.HS_PULL_SPEED)	
-		
+		velocity = Vector2(0,-Gconst.HS_PULL_SPEED*2)	
+	elif dir == Gconst.DOWN:
+		velocity = Vector2(0,Gconst.HS_PULL_SPEED*2)
+
+
+func _on_death_plane_body_entered(body):
+	if body == self:
+		go_to_spawnpoint()

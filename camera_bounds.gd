@@ -1,12 +1,13 @@
 extends Area2D
 
-const CAM_TOUT = 5 #number of frames after a camera transition you will be restriced from another for
+#const CAM_TOUT = 5 #number of frames after a camera transition you will be restriced from another for
 
 onready var player = get_node(Gconst.PLAYER_PATH)
 onready var camera_node = player.get_node("Camera2D")
 var collis_shape
 var size
-var cam_change_timeout = 0 #current number of frames till restrictions are lifted
+var cam_lock_c = 0 #goes up when you enter a camera area, goes down when you leave
+#var cam_change_timeout = 0 #current number of frames till restrictions are lifted
 
 func reset_limits(cam):
 	print_debug(cam)
@@ -25,21 +26,28 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if cam_change_timeout > 0:
-		cam_change_timeout -= 1
+#func _process(delta):
+#	if cam_change_timeout > 0:
+#		cam_change_timeout -= 1
 
 
 func _on_camera_bounds_body_exited(body):
-	if body == player and cam_change_timeout <= 0:
-		reset_limits(body.get_node("Camera2D"))
+	pass
+#	if body == player:
+#		cam_lock_c -= 1
+#		print_debug(cam_lock_c)
+#		if cam_lock_c <= 0:
+			#reset_limits(body.get_node("Camera2D"))
 
 
 func _on_camera_bounds_body_entered(body):
 	if body == player:
+		#cam_lock_c = cam_lock_c + 1
+		print_debug(cam_lock_c)
+		
 		camera_node.set_limit(MARGIN_RIGHT,position.x+size.x)
 		camera_node.set_limit(MARGIN_LEFT,position.x-size.x)
 		camera_node.set_limit(MARGIN_BOTTOM,position.y+size.y)
 		camera_node.set_limit(MARGIN_TOP,position.y-size.y)
-		cam_change_timeout = CAM_TOUT
+		#cam_change_timeout = CAM_TOUT
 	pass # Replace with function body.
