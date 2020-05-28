@@ -1,12 +1,12 @@
 extends Area2D
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text" 
+const CAM_TOUT = 5 #number of frames after a camera transition you will be restriced from another for
+
 onready var player = get_node(Gconst.PLAYER_PATH)
 onready var camera_node = player.get_node("Camera2D")
 var collis_shape
 var size
+var cam_change_timeout = 0 #current number of frames till restrictions are lifted
 
 func reset_limits(cam):
 	print_debug(cam)
@@ -25,12 +25,13 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if cam_change_timeout > 0:
+		cam_change_timeout -= 1
 
 
 func _on_camera_bounds_body_exited(body):
-	if body == player:
+	if body == player and cam_change_timeout <= 0:
 		reset_limits(body.get_node("Camera2D"))
 
 
@@ -40,4 +41,5 @@ func _on_camera_bounds_body_entered(body):
 		camera_node.set_limit(MARGIN_LEFT,position.x-size.x)
 		camera_node.set_limit(MARGIN_BOTTOM,position.y+size.y)
 		camera_node.set_limit(MARGIN_TOP,position.y-size.y)
+		cam_change_timeout = CAM_TOUT
 	pass # Replace with function body.
