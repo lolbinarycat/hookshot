@@ -36,9 +36,9 @@ func start_hs(delta):
 	elif hs_dir == Gconst.UP:
 		hs_speed = (get_parent().velocity.y + MIN_SPEED) * delta
 	elif hs_dir == Gconst.DOWN:
-		hs_speed = (-get_parent().velocity.y + MIN_SPEED) * delta		
+		hs_speed = (-get_parent().velocity.y + MIN_SPEED) * delta
 	if hs_speed <= MIN_SPEED:
-		hs_speed = MIN_SPEED	
+		hs_speed = MIN_SPEED
 	emit_signal("hs_extend")
 	hs_time = 0
 # Called when the node enters the scene tree for the first time.

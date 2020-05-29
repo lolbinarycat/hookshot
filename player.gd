@@ -100,6 +100,8 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("jump"):
 			emit_signal("stop_hs")
 			velocity.y = -JUMP_HEIGHT
+			hs_active = false
+			hs_pulling = false
 	# start walljump proccesing
 	if is_on_wall():
 		timeFromWall = 0
