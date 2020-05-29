@@ -1,12 +1,17 @@
 extends KinematicBody2D
 
-const JUMP_HEIGHT = 250
-const WALL_JUMP_HEIGHT = 150
-const WALL_JUMP_WIDTH = 70
+# constants
+
+const JUMP_HEIGHT = 200
+#const JUMP_MOMENTUM_BOOST = 50 # how much
+#const
+const WALL_JUMP_HEIGHT = 200
+const WALL_JUMP_WIDTH = 100
+const WALL_JUMP_MIN_HEIGHT = 60
 const RUN_SPEED = 20
 const FRICTION = 1.09
-const AIR_FRICTION =1.01
-const AIR_SPEED = 4
+const AIR_FRICTION = 1.02
+const AIR_SPEED = 5
 const GRAVITY = 7.5
 const IS_PLAYER = true
 
@@ -41,25 +46,40 @@ func get_which_wall_collided():
 		elif collision.normal.x < 0:
 			return RIGHT
 	return NONE
-	
+
 func stop_hs():
 	emit_signal("stop_hs")
 	hs_active = false
 	hs_pulling = false
 	
+func jump():
+	emit_signal("stop_hs")
+	velocity.y = -JUMP_HEIGHT + -abs(velocity.x) / 3
+	hs_active = false
+	hs_pulling = false
+	#if abs(velocity.x) > 
+	
+# end of custom functions
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
+	#print_debug(get_path())
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
+func _process(delta):
+	pass
+	#debug
+#	print_debug(velocity.x)
+	#print_debug(is_on_floor())
+	#print_debug(get_path())
+	#/debug
+
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	
-	#if Input.is_action_just_pressed("reverse"):
-	#	velocity.x = -velocity.x
 	if hs_active:
 		fallspeed = 0
 	elif Input.is_action_pressed("jump"): #variable jump height and slow falling
@@ -71,7 +91,9 @@ func _physics_process(delta):
 		velocity = move_and_slide(Vector2(velocity.x,velocity.y),Vector2(0,-1))
 	if hs_pulling and (is_on_wall() or is_on_ceiling()):
 		stop_hs()
-		
+	# when adding down right and down left, make sure to add them here
+	elif hs_pulling and get_node("hookshot").hs_dir == Gconst.DOWN and is_on_floor():
+		stop_hs()
 			
 	
 
@@ -84,7 +106,7 @@ func _physics_process(delta):
 		if  Input.is_action_pressed("ui_right"):
 			velocity.x += AIR_SPEED
 		elif Input.is_action_pressed("ui_left"):
-			velocity.x -= AIR_SPEED	
+			velocity.x -= AIR_SPEED
 			
 		if timeFromGround == 0:
 			if Input.is_action_pressed("ui_right"):
@@ -98,10 +120,7 @@ func _physics_process(delta):
 		
 	if timeFromGround < 0.2:
 		if Input.is_action_just_pressed("jump"):
-			emit_signal("stop_hs")
-			velocity.y = -JUMP_HEIGHT
-			hs_active = false
-			hs_pulling = false
+			jump()
 	# start walljump proccesing
 	if is_on_wall():
 		timeFromWall = 0
@@ -115,7 +134,8 @@ func _physics_process(delta):
 			velocity.x = -WALL_JUMP_WIDTH
 		elif lastWallDir == LEFT:
 			velocity.x = WALL_JUMP_WIDTH
-			
+		if velocity.y < WALL_JUMP_MIN_HEIGHT:
+			velocity.y = -WALL_JUMP_HEIGHT
 	#spikes
 	#if is_on_wall() or is_on_ceiling() or is_on_floor():
 	#	if get_node(Gconst.TILEMAP_PATH).get_cellv(position) == 2:
@@ -144,7 +164,7 @@ func _on_hs_head_hs_hit(dir):
 	elif dir == Gconst.LEFT:
 		velocity = Vector2(-Gconst.HS_PULL_SPEED*2,0)
 	elif dir == Gconst.UP:
-		velocity = Vector2(0,-Gconst.HS_PULL_SPEED*2)	
+		velocity = Vector2(0,-Gconst.HS_PULL_SPEED*2)
 	elif dir == Gconst.DOWN:
 		velocity = Vector2(0,Gconst.HS_PULL_SPEED*2)
 
@@ -152,3 +172,9 @@ func _on_hs_head_hs_hit(dir):
 func _on_death_plane_body_entered(body):
 	if body == self:
 		go_to_spawnpoint()
+
+
+func _on_hookshot_hs_cancel():
+	hs_active = false
+	hs_pulling = false
+	pass # Replace with function body.

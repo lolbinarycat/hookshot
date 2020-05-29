@@ -4,10 +4,11 @@ extends Area2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var player = get_node(Gconst.PLAYER_PATH)
+var player
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player  = get_node(Gconst.PLAYER_PATH)
 	pass # Replace with function body.
 
 
@@ -16,6 +17,6 @@ func _ready():
 #	pass
 
 
-#func _on_death_plane_body_entered(body):
-#	if body == player:
-#		player.go_to_spawnpoint()
+func _on_death_plane_body_entered(body):
+	if body == player:
+		player.go_to_spawnpoint()

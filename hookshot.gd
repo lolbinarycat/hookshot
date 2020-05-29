@@ -6,6 +6,7 @@ const MIN_SPEED = 1
 
 signal hs_extend #sent when the hookshot enters the extention state
 signal hs_miss #sent when the hookshot retracts without hitting anything
+signal hs_cancel #sent when the hookshot is canceled WHILE PULLING THE PLAYER
 #signal hs_pull # snt wh/ hs pulls player
 
 enum {INACTIVE,EXTENDING,RETRACTING,PULLING} #pulling = hookshot hit a wall
@@ -57,10 +58,10 @@ func _process(delta):
 				hs_dir_buffer = 5
 		elif hs_state == EXTENDING:
 			hs_state = RETRACTING
-#		elif hs_state == PULLING:
-#			hs_state = INACTIVE
-#			hs_dist = 0
-#			emit_signal("hs_miss")
+		elif hs_state == PULLING:
+			hs_state = INACTIVE
+			hs_dist = 0
+			emit_signal("hs_cancel")
 	elif Input.is_action_pressed("hookshot") and hs_dir_buffer > 0:
 		hs_dir = get_direction()
 		if hs_dir == null:

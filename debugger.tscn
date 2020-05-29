@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://debugger.gd" type="Script" id=1]
+
+[node name="debugger" type="ItemList"]
+light_mask = 0
+use_parent_material = true
+margin_left = -1.0
+margin_right = 118.0
+margin_bottom = 18.0
+select_mode = 1
+max_text_lines = 2
+auto_height = true
+max_columns = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_right = 112.0
+margin_bottom = 104.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

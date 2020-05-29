@@ -2,8 +2,9 @@ extends Area2D
 
 #const CAM_TOUT = 5 #number of frames after a camera transition you will be restriced from another for
 
-onready var player = get_node(Gconst.PLAYER_PATH)
-onready var camera_node = player.get_node("Camera2D")
+var player #get_node(Gconst.PLAYER_PATH)
+#print_debug(player)
+var camera_node 
 var collis_shape
 var size
 var cam_lock_c = 0 #goes up when you enter a camera area, goes down when you leave
@@ -19,6 +20,8 @@ func reset_limits(cam):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player = get_node(NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player"))
+	camera_node = player.get_node("Camera2D")
 	#camera_node = get_node(Gconst.CAMERA_PATH)
 	collis_shape = get_node("CollisionShape2D")
 	#print_debug(camera_node)
@@ -41,13 +44,14 @@ func _on_camera_bounds_body_exited(body):
 
 
 func _on_camera_bounds_body_entered(body):
+	pass
 	if body == player:
-		#cam_lock_c = cam_lock_c + 1
-		print_debug(cam_lock_c)
-		
+##		#cam_lock_c = cam_lock_c + 1
+#		print_debug(cam_lock_c)
+#
 		camera_node.set_limit(MARGIN_RIGHT,position.x+size.x)
 		camera_node.set_limit(MARGIN_LEFT,position.x-size.x)
 		camera_node.set_limit(MARGIN_BOTTOM,position.y+size.y)
 		camera_node.set_limit(MARGIN_TOP,position.y-size.y)
-		#cam_change_timeout = CAM_TOUT
+#		#cam_change_timeout = CAM_TOUT
 	pass # Replace with function body.
