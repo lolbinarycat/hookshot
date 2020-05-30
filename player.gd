@@ -32,6 +32,7 @@ enum {RIGHT, LEFT, NONE}
 var lastWallDir = NONE
 var hs_active = false
 var hs_pulling = false
+var tilemap
 
 func go_to_spawnpoint():
 	get_tree().reload_current_scene()
@@ -59,10 +60,19 @@ func jump():
 	hs_pulling = false
 	#if abs(velocity.x) > 
 	
+func get_tile_under():
+	if tilemap != null:
+		#print_debug("checking" + String(global_position))
+		return tilemap.get_cell(global_position.x/32,global_position.y/32)
+	else:
+		print_debug("unable to get tilemap")
+		return
+	
 # end of custom functions
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	tilemap = get_node(Gconst.TILEMAP_PATH)
 	pass
 	#print_debug(get_path())
 	
@@ -70,6 +80,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
+			get_parent().position = global_position
+			get_parent().save_game()
 	pass
 	#debug
 #	print_debug(velocity.x)

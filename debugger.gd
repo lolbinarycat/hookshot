@@ -21,14 +21,16 @@ func format_float(f,tdig = 6): # tdig = target digits
 #		return "f"
 
 func _ready():
-	var player = get_node(Gconst.PLAYER_PATH)
+	player = get_node(Gconst.PLAYER_PATH)
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+# warning-ignore:unused_argument
 func _process(delta):
 	set_item_text(1,format_float(player.velocity.x))
 #	#get_node("velocity_x").text = String(player.velocity.y)
+	set_item_text(3,String(player.get_tile_under()))
 	pass
 
 
@@ -37,6 +39,8 @@ func _on_Player_ready():
 	
 	add_item("velocity.x")
 	add_item(String(player["velocity"].x))
+	add_item("tile under player")
+	add_item("e")
 #	test = get_child(0)
 #	print_debug(test)
 #	if test == null:
