@@ -4,9 +4,10 @@ extends Node
 # var a = 2  
 # var b = "text"
 const HS_PULL_SPEED = 100
-enum {LEFT,RIGHT,UP,DOWN}
+enum {LEFT,RIGHT,UP,DOWN,DOWN_RIGHT}
 const PLAYER_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/")
 const TILEMAP_PATH = NodePath("/root/Node2D/WorldEnvironment/TileMap/")
+const HOOKSHOT_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/hookshot")
 const SAVE_FILE_PATH = "user://hookshot.save"
 #var player = get_root()
 

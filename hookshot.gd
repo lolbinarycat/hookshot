@@ -2,7 +2,7 @@ extends Position2D
 
 const MAX_RANGE = 800
 const MAX_TIME = 1
-const MIN_SPEED = 1
+const MIN_SPEED = 50
 
 signal hs_extend #sent when the hookshot enters the extention state
 signal hs_miss #sent when the hookshot retracts without hitting anything
@@ -15,13 +15,15 @@ var hs_dist = 0 #how far is the end of the hookshot away from the player
 #enum {LEFT,RIGHT,UP,DOWN}
 var hs_dir 
 var hs_dir_buffer = 0.0 #timer for how long you have to press a button after using the hookshot
-var hs_speed
+var hs_speed = 0.0
 var hs_time = 0.0
 
 func get_direction():
 	if Input.is_action_pressed("ui_left"):
 		return Gconst.LEFT
 	elif Input.is_action_pressed("ui_right"):
+		if Input.is_action_pressed("ui_down"):
+			return Gconst.DOWN_RIGHT
 		return Gconst.RIGHT
 	elif Input.is_action_pressed("ui_up"):
 		return Gconst.UP
@@ -31,15 +33,15 @@ func get_direction():
 func start_hs(delta):
 	hs_state = EXTENDING
 	if hs_dir == Gconst.RIGHT: #you transfer your momentum into the hookshot
-		hs_speed = (get_parent().velocity.x + MIN_SPEED) * delta
+		hs_speed = (get_parent().velocity.x + MIN_SPEED)
 	elif hs_dir == Gconst.LEFT:
-		hs_speed = (-get_parent().velocity.x + MIN_SPEED) * delta
+		hs_speed = (-get_parent().velocity.x + MIN_SPEED)
 	elif hs_dir == Gconst.UP:
-		hs_speed = (get_parent().velocity.y + MIN_SPEED) * delta
-	elif hs_dir == Gconst.DOWN:
-		hs_speed = (-get_parent().velocity.y + MIN_SPEED) * delta
-	if hs_speed <= MIN_SPEED:
-		hs_speed = MIN_SPEED
+		hs_speed = (get_parent().velocity.y + MIN_SPEED)
+	elif hs_dir == Gconst.DOWN or Gconst.DOWN_RIGHT:
+		hs_speed = (-get_parent().velocity.y + MIN_SPEED)
+	#if hs_speed <= MIN_SPEED:
+	#	hs_speed = MIN_SPEED
 	emit_signal("hs_extend")
 	hs_time = 0
 # Called when the node enters the scene tree for the first time.
@@ -71,12 +73,12 @@ func _process(delta):
 			start_hs(delta)
 			hs_dir_buffer = 0
 	if hs_state == EXTENDING:
-		hs_dist += hs_speed
+		hs_dist += hs_speed*delta
 		hs_time += delta
 	elif hs_state == RETRACTING:
-		hs_dist += -hs_speed
+		hs_dist += -hs_speed*delta
 	elif hs_state == PULLING:
-		hs_dist += (-Gconst.HS_PULL_SPEED*delta)
+		hs_dist += (-hs_speed*delta)
 		#get_parent().position.x -= HS_PULL_SPEED
 	
 	if hs_dist <= 0: # what happens when the hookshot is retracted
@@ -103,6 +105,9 @@ func _process(delta):
 		position.x = 0
 	elif hs_dir == Gconst.DOWN:
 		position.y = hs_dist
+	elif hs_dir == Gconst.DOWN_RIGHT:
+		position.x = hs_dist*2/3
+		position.y = hs_dist*2/3
 #	pass
 
 

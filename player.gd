@@ -39,6 +39,9 @@ func go_to_spawnpoint():
 	get_tree().reload_current_scene()
 	#velocity = Vector2(0,0)
 	#global_position = global_position + Vector2(4,0) #= get_parent().global_position
+func die():
+	go_to_spawnpoint()
+
 
 func get_which_wall_collided():
 	for i in range(get_slide_count()):
@@ -153,7 +156,7 @@ func _physics_process(delta):
 			velocity.x = -WALL_JUMP_WIDTH
 		elif lastWallDir == LEFT:
 			velocity.x = WALL_JUMP_WIDTH
-		if velocity.y < WALL_JUMP_MIN_HEIGHT:
+		if velocity.y > -WALL_JUMP_MIN_HEIGHT:
 			velocity.y = -WALL_JUMP_HEIGHT
 	#spikes
 	#if is_on_wall() or is_on_ceiling() or is_on_floor():
@@ -174,18 +177,20 @@ func _on_hookshot_hs_miss():
 	
 
 
-
 func _on_hs_head_hs_hit(dir):
 	hs_active = true
 	hs_pulling = true
+	var hs = get_node("hookshot")
 	if dir == Gconst.RIGHT:
-		velocity = Vector2(Gconst.HS_PULL_SPEED*2,0)
+		velocity = Vector2(hs.hs_speed*2,0)
 	elif dir == Gconst.LEFT:
-		velocity = Vector2(-Gconst.HS_PULL_SPEED*2,0)
+		velocity = Vector2(-hs.hs_speed*2,0)
 	elif dir == Gconst.UP:
-		velocity = Vector2(0,-Gconst.HS_PULL_SPEED*2)
+		velocity = Vector2(0,-hs.hs_speed*2)
 	elif dir == Gconst.DOWN:
-		velocity = Vector2(0,Gconst.HS_PULL_SPEED*2)
+		velocity = Vector2(0,hs.hs_speed*2)
+	elif dir == Gconst.DOWN_RIGHT:
+		velocity = Vector2(hs.hs_speed*2/3,hs.hs_speed*2/3)
 
 
 func _on_death_plane_body_entered(body):
