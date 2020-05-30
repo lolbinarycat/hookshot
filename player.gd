@@ -32,6 +32,7 @@ enum {RIGHT, LEFT, NONE}
 var lastWallDir = NONE
 var hs_active = false
 var hs_pulling = false
+var is_on_collected_cp = false #whether or not the player is on a checkpoint that is already collected. this stops checkpoints from being collected every frame you are on them
 var tilemap
 
 func go_to_spawnpoint():
@@ -82,7 +83,12 @@ func _ready():
 func _process(delta):
 	if tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
 			get_parent().position = global_position
-			get_parent().save_game()
+			if !is_on_collected_cp:  
+				get_parent().save_game()
+				is_on_collected_cp = true
+			position = Vector2(0,0)
+	else:
+		is_on_collected_cp = false
 	pass
 	#debug
 #	print_debug(velocity.x)

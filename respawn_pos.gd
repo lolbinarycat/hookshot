@@ -44,7 +44,7 @@ func load_game(): #path independant
 		print_debug("save file not found")
 		return
 	
-	var save_nodes = get_tree().get_nodes_in_group("Persist")
+	#var save_nodes = get_tree().get_nodes_in_group("Persist")
 	#for i in save_nodes:
 	#	i.queue_free()
 

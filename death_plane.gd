@@ -19,4 +19,4 @@ func _ready():
 
 func _on_death_plane_body_entered(body):
 	if body == player:
-		player.go_to_spawnpoint()
+		player.die()
