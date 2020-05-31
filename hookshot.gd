@@ -17,9 +17,12 @@ var hs_dir
 var hs_dir_buffer = 0.0 #timer for how long you have to press a button after using the hookshot
 var hs_speed = 0.0
 var hs_time = 0.0
+var player
 
 func get_direction():
 	if Input.is_action_pressed("ui_left"):
+		if Input.is_action_pressed("ui_down"):
+			return Gconst.DOWN_LEFT
 		return Gconst.LEFT
 	elif Input.is_action_pressed("ui_right"):
 		if Input.is_action_pressed("ui_down"):
@@ -38,15 +41,22 @@ func start_hs(delta):
 	elif hs_dir == Gconst.LEFT:
 		hs_speed = (-get_parent().velocity.x + MIN_SPEED)
 	elif hs_dir == Gconst.UP:
-		hs_speed = (get_parent().velocity.y + MIN_SPEED)
-	elif hs_dir == Gconst.DOWN or Gconst.DOWN_RIGHT:
 		hs_speed = (-get_parent().velocity.y + MIN_SPEED)
-	#if hs_speed <= MIN_SPEED:
-	#	hs_speed = MIN_SPEED
+	elif hs_dir == Gconst.DOWN:
+		hs_speed = (get_parent().velocity.y + MIN_SPEED)
+	elif hs_dir == Gconst.DOWN_RIGHT:
+		hs_speed = (get_parent().velocity.y + get_parent().velocity.x) + MIN_SPEED
+	elif hs_dir == Gconst.DOWN_LEFT:
+		hs_speed = (player.velocity.y + -player.velocity.x) + MIN_SPEED
+		pass
+
+	if hs_speed <= MIN_SPEED:
+		hs_speed = MIN_SPEED
 	emit_signal("hs_extend")
 	hs_time = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player = get_parent()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -110,6 +120,9 @@ func _process(delta):
 		position.y = hs_dist
 	elif hs_dir == Gconst.DOWN_RIGHT:
 		position.x = hs_dist*Gconst.D_VECTOR_CO
+		position.y = hs_dist*Gconst.D_VECTOR_CO
+	elif hs_dir == Gconst.DOWN_LEFT:
+		position.x = -hs_dist*Gconst.D_VECTOR_CO
 		position.y = hs_dist*Gconst.D_VECTOR_CO
 #	pass
 
