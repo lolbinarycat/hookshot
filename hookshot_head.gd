@@ -37,7 +37,7 @@ func _physics_process(delta):
 			collision = move_and_collide(Vector2(10,10))
 		elif hs_dir == Gconst.DOWN_LEFT:
 			position = Vector2(10,-10)
-			collision = move_and_collide(Vector2(10,-10))
+			collision = move_and_collide(Vector2(-10,10))
 		elif hs_dir == Gconst.UP_RIGHT:
 			position = Vector2(-10,10)
 			collision = move_and_collide(Vector2(10,-10))

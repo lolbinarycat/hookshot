@@ -9,7 +9,7 @@ const WALL_JUMP_HEIGHT = 200
 const WALL_JUMP_WIDTH = 100
 const WALL_JUMP_MIN_HEIGHT = 200
 const RUN_SPEED = 20
-const FRICTION = 1.09
+const FRICTION = 1.2
 const AIR_FRICTION = 1.02
 const AIR_SPEED = 5
 const GRAVITY = 7.5
@@ -34,6 +34,7 @@ var hs_active = false
 var hs_pulling = false
 var is_on_collected_cp = false #whether or not the player is on a checkpoint that is already collected. this stops checkpoints from being collected every frame you are on them
 var tilemap
+var hs
 
 func go_to_spawnpoint():
 # warning-ignore:return_value_discarded
@@ -78,6 +79,7 @@ func get_tile_under():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tilemap = get_node(Gconst.TILEMAP_PATH)
+	hs = get_node(Gconst.HOOKSHOT_PATH)
 	pass
 	#print_debug(get_path())
 	
@@ -132,13 +134,13 @@ func _physics_process(delta):
 		elif Input.is_action_pressed("ui_left"):
 			velocity.x -= AIR_SPEED
 			
-		if timeFromGround == 0:
+		if timeFromGround == 0 and hs.hs_state != hs.END_SLIDE:
 			if Input.is_action_pressed("ui_right"):
 				velocity.x += RUN_SPEED
 			elif Input.is_action_pressed("ui_left"):
 				velocity.x -= RUN_SPEED
 			velocity.x = velocity.x / FRICTION
-		else:
+		elif timeFromGround > 0:
 			velocity.y = velocity.y + fallspeed
 			velocity.x = velocity.x / AIR_FRICTION
 		
