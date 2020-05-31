@@ -1,7 +1,7 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
-[ext_resource path="res://player1.png" type="Texture" id=2]
+[ext_resource path="res://player_new.png" type="Texture" id=2]
 [ext_resource path="res://world.gd" type="Script" id=3]
 [ext_resource path="res://wall.png" type="Texture" id=4]
 [ext_resource path="res://slope.png" type="Texture" id=5]
@@ -97,7 +97,7 @@ points = PoolVector2Array( 0, 8, 8, 0, 8, 8, 0, 8 )
 3/z_index = 0
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 5.99115, 6.99072 )
+extents = Vector2( 6, 6 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 2.5, 2.5 )
@@ -116,6 +116,8 @@ extents = Vector2( 512, 304 )
 
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 512, 608 )
+
+[sub_resource type="Theme" id=12]
 
 [node name="Node2D" type="Node2D"]
 __meta__ = {
@@ -154,11 +156,12 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/respawn_pos/Player"]
-position = Vector2( 0, 0.94 )
 shape = SubResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="WorldEnvironment/respawn_pos/Player"]
 texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 2, 4, 12, 12 )
 
 [node name="Camera2D" type="Camera2D" parent="WorldEnvironment/respawn_pos/Player"]
 current = true
@@ -286,17 +289,10 @@ shape = SubResource( 9 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="debugger" parent="CanvasLayer" instance=ExtResource( 14 )]
-margin_left = 0.0
-margin_right = 170.0
-
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/debugger"]
-show_behind_parent = true
-margin_right = 112.0
-margin_bottom = 104.0
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+use_parent_material = false
+margin_right = 181.0
+theme = SubResource( 12 )
+custom_colors/font_color = Color( 0.564706, 0.745098, 0.756863, 1 )
 [connection signal="ready" from="WorldEnvironment/respawn_pos/Player" to="CanvasLayer/debugger" method="_on_Player_ready"]
 [connection signal="stop_hs" from="WorldEnvironment/respawn_pos/Player" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_Player_stop_hs"]
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]

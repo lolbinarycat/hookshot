@@ -36,6 +36,8 @@ func get_hs_active():
 	return player.hs_active
 func get_hs_pulling():
 	return player.hs_pulling
+func get_hs_dir():
+	return str(hs.hs_dir)
 
 
 
@@ -48,7 +50,8 @@ var debug_items = [ #label, function name
 	["hs.pos.x",funcref(self,"get_and_format_hs_position_x")],
 	["hs.pos.y",funcref(self,"get_and_format_hs_position_y")],
 	["player.hs_active",funcref(self,"get_hs_active")],
-	["hs_pulling",funcref(self,"get_hs_pulling")]
+	["hs_pulling",funcref(self,"get_hs_pulling")],
+	["hs_dir",funcref(self,"get_hs_dir")]
 ]
 	
 

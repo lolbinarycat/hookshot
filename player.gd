@@ -7,7 +7,7 @@ const JUMP_HEIGHT = 200
 #const
 const WALL_JUMP_HEIGHT = 200
 const WALL_JUMP_WIDTH = 100
-const WALL_JUMP_MIN_HEIGHT = 60
+const WALL_JUMP_MIN_HEIGHT = 200
 const RUN_SPEED = 20
 const FRICTION = 1.09
 const AIR_FRICTION = 1.02
@@ -36,6 +36,7 @@ var is_on_collected_cp = false #whether or not the player is on a checkpoint tha
 var tilemap
 
 func go_to_spawnpoint():
+# warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()
 	#velocity = Vector2(0,0)
 	#global_position = global_position + Vector2(4,0) #= get_parent().global_position
@@ -83,6 +84,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+# warning-ignore:unused_argument
 func _process(delta):
 	if tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
 			get_parent().position = global_position
@@ -157,7 +159,7 @@ func _physics_process(delta):
 		elif lastWallDir == LEFT:
 			velocity.x = WALL_JUMP_WIDTH
 		if velocity.y > -WALL_JUMP_MIN_HEIGHT:
-			velocity.y = -WALL_JUMP_HEIGHT
+			velocity.y = -WALL_JUMP_MIN_HEIGHT
 	#spikes
 	#if is_on_wall() or is_on_ceiling() or is_on_floor():
 	#	if get_node(Gconst.TILEMAP_PATH).get_cellv(position) == 2:
@@ -193,6 +195,10 @@ func _on_hs_head_hs_hit(dir):
 		velocity = Vector2(hs.hs_speed*Gconst.D_VECTOR_CO*2,hs.hs_speed*Gconst.D_VECTOR_CO*2)
 	elif dir == Gconst.DOWN_LEFT:
 		velocity = Vector2(-hs.hs_speed*Gconst.D_VECTOR_CO*2,hs.hs_speed*Gconst.D_VECTOR_CO*2)
+	elif dir == Gconst.UP_RIGHT:
+		velocity = Vector2(hs.hs_speed*Gconst.D_VECTOR_CO*2,-hs.hs_speed*Gconst.D_VECTOR_CO*2)
+	elif dir == Gconst.UP_LEFT:
+		velocity = Vector2(-hs.hs_speed*Gconst.D_VECTOR_CO*2,-hs.hs_speed*Gconst.D_VECTOR_CO*2)
 
 
 

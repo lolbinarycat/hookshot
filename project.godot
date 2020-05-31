@@ -25,7 +25,6 @@ Gconst="*res://global_constants.gd"
 
 [display]
 
-window/size/height=608
 window/size/resizable=false
 window/stretch/mode="viewport"
 

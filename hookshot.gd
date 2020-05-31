@@ -133,7 +133,7 @@ func _process(delta):
 		position.y = hs_dist*Gconst.D_VECTOR_CO
 	elif hs_dir == Gconst.UP_RIGHT:
 		position = Vector2(hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
-	elif hs_dir == Gconst.DOWN_LEFT:
+	elif hs_dir == Gconst.UP_LEFT:
 		position = Vector2(-hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
 #	pass
 
