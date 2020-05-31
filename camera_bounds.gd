@@ -43,6 +43,8 @@ func _on_camera_bounds_body_exited(body):
 			#reset_limits(body.get_node("Camera2D"))
 
 
+
+
 func _on_camera_bounds_body_entered(body):
 	pass
 	if body == player:

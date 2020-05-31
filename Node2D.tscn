@@ -100,6 +100,7 @@ points = PoolVector2Array( 0, 8, 8, 0, 8, 8, 0, 8 )
 extents = Vector2( 5.99115, 6.99072 )
 
 [sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 2.5, 2.5 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 197, 23 )
@@ -191,13 +192,14 @@ collision_mask = 2
 script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/respawn_pos/Player/hookshot/hs_head"]
-scale = Vector2( 0.2, 0.2 )
 z_as_relative = false
 shape = SubResource( 5 )
 
 [node name="hs_head_sprite" type="Sprite" parent="WorldEnvironment/respawn_pos/Player/hookshot"]
 z_index = -1
 texture = ExtResource( 17 )
+region_enabled = true
+region_rect = Rect2( 2, 2, 5, 5 )
 
 [node name="death_planes" type="Node" parent="WorldEnvironment"]
 

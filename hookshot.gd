@@ -23,10 +23,14 @@ func get_direction():
 	if Input.is_action_pressed("ui_left"):
 		if Input.is_action_pressed("ui_down"):
 			return Gconst.DOWN_LEFT
+		elif Input.is_action_pressed("ui_up"):
+			return Gconst.UP_LEFT
 		return Gconst.LEFT
 	elif Input.is_action_pressed("ui_right"):
 		if Input.is_action_pressed("ui_down"):
 			return Gconst.DOWN_RIGHT
+		elif Input.is_action_pressed("ui_up"):
+			return Gconst.UP_RIGHT
 		return Gconst.RIGHT
 	elif Input.is_action_pressed("ui_up"):
 		return Gconst.UP
@@ -48,7 +52,10 @@ func start_hs(delta):
 		hs_speed = (get_parent().velocity.y + get_parent().velocity.x) + MIN_SPEED
 	elif hs_dir == Gconst.DOWN_LEFT:
 		hs_speed = (player.velocity.y + -player.velocity.x) + MIN_SPEED
-		pass
+	elif hs_dir == Gconst.UP_RIGHT:
+		hs_speed = (-player.velocity.y + player.velocity.x) + MIN_SPEED
+	elif hs_dir == Gconst.UP_LEFT:
+		hs_speed = (-player.velocity.y + -player.velocity.x) + MIN_SPEED
 
 	if hs_speed <= MIN_SPEED:
 		hs_speed = MIN_SPEED
@@ -124,6 +131,10 @@ func _process(delta):
 	elif hs_dir == Gconst.DOWN_LEFT:
 		position.x = -hs_dist*Gconst.D_VECTOR_CO
 		position.y = hs_dist*Gconst.D_VECTOR_CO
+	elif hs_dir == Gconst.UP_RIGHT:
+		position = Vector2(hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
+	elif hs_dir == Gconst.DOWN_LEFT:
+		position = Vector2(-hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
 #	pass
 
 

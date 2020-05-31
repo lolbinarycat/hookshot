@@ -33,6 +33,10 @@ func _process(delta):
 			set_rotation_degrees(180+45)
 		elif hs.hs_dir == Gconst.DOWN_LEFT:
 			set_rotation_degrees(315)
+		elif hs.hs_dir == Gconst.UP_RIGHT:
+			set_rotation_degrees(135)
+		elif hs.hs_dir == Gconst.UP_LEFT:
+			set_rotation_degrees(45)
 			
 	if hs.hs_state == hs.INACTIVE:
 		visible = false

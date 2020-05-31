@@ -5,7 +5,7 @@ extends Node
 # var b = "text"
 const D_VECTOR_CO = 1 # diaganal vector coefficent
 const HS_PULL_SPEED = 100
-enum {LEFT,RIGHT,UP,DOWN,DOWN_RIGHT,DOWN_LEFT}
+enum {LEFT,RIGHT,UP,DOWN,DOWN_RIGHT,DOWN_LEFT,UP_RIGHT,UP_LEFT}
 const PLAYER_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/")
 const TILEMAP_PATH = NodePath("/root/Node2D/WorldEnvironment/TileMap/")
 const HOOKSHOT_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/hookshot")
