@@ -11,7 +11,7 @@ signal hs_cancel #sent when the hookshot is canceled WHILE PULLING THE PLAYER
 
 enum {INACTIVE,EXTENDING,RETRACTING,PULLING} #pulling = hookshot hit a wall
 var hs_state = INACTIVE #what is the hookshot doing
-var hs_dist = 0 #how far is the end of the hookshot away from the player
+var hs_dist = 0.0 #how far is the end of the hookshot away from the player
 #enum {LEFT,RIGHT,UP,DOWN}
 var hs_dir 
 var hs_dir_buffer = 0.0 #timer for how long you have to press a button after using the hookshot
@@ -30,6 +30,7 @@ func get_direction():
 	elif Input.is_action_pressed("ui_down"):
 		return Gconst.DOWN
 
+# warning-ignore:unused_argument
 func start_hs(delta):
 	hs_state = EXTENDING
 	if hs_dir == Gconst.RIGHT: #you transfer your momentum into the hookshot
@@ -72,6 +73,7 @@ func _process(delta):
 			hs_state = EXTENDING
 			start_hs(delta)
 			hs_dir_buffer = 0
+			
 	if hs_state == EXTENDING:
 		hs_dist += hs_speed*delta
 		hs_time += delta
@@ -84,7 +86,8 @@ func _process(delta):
 	if hs_dist <= 0: # what happens when the hookshot is retracted
 		if hs_state == RETRACTING:
 			emit_signal("hs_miss") #deceptive name
-		hs_state = INACTIVE
+		if hs_state == RETRACTING or PULLING:
+			hs_state = INACTIVE
 	elif hs_dist > MAX_RANGE:
 		hs_state = RETRACTING
 	elif hs_time > MAX_TIME:
@@ -106,8 +109,8 @@ func _process(delta):
 	elif hs_dir == Gconst.DOWN:
 		position.y = hs_dist
 	elif hs_dir == Gconst.DOWN_RIGHT:
-		position.x = hs_dist*2/3
-		position.y = hs_dist*2/3
+		position.x = hs_dist*Gconst.D_VECTOR_CO
+		position.y = hs_dist*Gconst.D_VECTOR_CO
 #	pass
 
 

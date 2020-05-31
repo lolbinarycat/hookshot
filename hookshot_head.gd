@@ -38,3 +38,5 @@ func _physics_process(delta):
 		if collision:
 			emit_signal("hs_hit",hs_dir)
 			#print_debug("sending hs_hit signal")
+	else:
+		position = Vector2(0,0)

@@ -114,7 +114,7 @@ func _physics_process(delta):
 	if hs_pulling and (is_on_wall() or is_on_ceiling()):
 		stop_hs()
 	# when adding down right and down left, make sure to add them here
-	elif hs_pulling and get_node("hookshot").hs_dir == Gconst.DOWN and is_on_floor():
+	elif hs_pulling and (get_node("hookshot").hs_dir == Gconst.DOWN or Gconst.DOWN_RIGHT) and is_on_floor():
 		stop_hs()
 			
 	
@@ -190,12 +190,12 @@ func _on_hs_head_hs_hit(dir):
 	elif dir == Gconst.DOWN:
 		velocity = Vector2(0,hs.hs_speed*2)
 	elif dir == Gconst.DOWN_RIGHT:
-		velocity = Vector2(hs.hs_speed*2/3,hs.hs_speed*2/3)
+		velocity = Vector2(hs.hs_speed*Gconst.D_VECTOR_CO*2,hs.hs_speed*Gconst.D_VECTOR_CO*2)
 
 
 func _on_death_plane_body_entered(body):
 	if body == self:
-		go_to_spawnpoint()
+		die()
 
 
 func _on_hookshot_hs_cancel():

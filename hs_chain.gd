@@ -19,7 +19,8 @@ func _ready():
 # warning-ignore:unused_argument
 func _process(delta):
 	if hs.hs_dist != 0:
-		set_region_rect(Rect2(default_region.position,Vector2(hs.hs_dist,3)))
+#		set_region_rect( Rect2(default_region.position,Vector2(hs.hs_dist,3)) )
+		set_region_rect( Rect2(default_region.position,Vector2(hs.get_global_position().distance_to(player.get_global_position())/2,3)) )
 		if hs.hs_dir == Gconst.RIGHT:
 			set_rotation_degrees(180)
 		elif hs.hs_dir == Gconst.UP:

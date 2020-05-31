@@ -21,9 +21,34 @@ func get_and_format_player_velocity_x():
 	return format_float(player.velocity.x)
 func get_and_format_player_velocity_y():
 	return format_float(player.velocity.y)
+func get_hs_speed():
+#	hs = player.get_node("hookshot")
+	return String(hs.hs_speed)
+func get_hs_dist():
+	return format_float(hs.hs_dist)
+func get_hs_state():
+	return String(hs.hs_state)
+func get_and_format_hs_position_x():
+	return format_float(hs.position.x)
+func get_and_format_hs_position_y():
+	return format_float(hs.position.y)
+func get_hs_active():
+	return player.hs_active
+func get_hs_pulling():
+	return player.hs_pulling
+
+
+
 var debug_items = [ #label, function name
 	["velocity.x",funcref(self,"get_and_format_player_velocity_x")],
-	["velocity.y",funcref(self,"get_and_format_player_velocity_y")]
+	["velocity.y",funcref(self,"get_and_format_player_velocity_y")],
+	["hs_speed",funcref(self,"get_hs_speed")],
+	["hs_dist",funcref(self,"get_hs_dist")],
+	["hs_state",funcref(self,"get_hs_state")],
+	["hs.pos.x",funcref(self,"get_and_format_hs_position_x")],
+	["hs.pos.y",funcref(self,"get_and_format_hs_position_y")],
+	["player.hs_active",funcref(self,"get_hs_active")],
+	["hs_pulling",funcref(self,"get_hs_pulling")]
 ]
 	
 
@@ -40,6 +65,14 @@ func format_float(f,tdig = 6): # tdig = target digits
 #	else:
 #		return "f"
 
+func create_debug_items():
+	clear()
+	var i = 0
+	while i < len(debug_items):
+		add_item(debug_items[i][0])
+		add_item("E")
+		i += 1
+
 func _ready():
 	player = get_node(Gconst.PLAYER_PATH)
 	pass # Replace with function body.
@@ -50,7 +83,7 @@ func _ready():
 func _process(delta):
 	var i = 0
 	while i < len(debug_items):
-		set_item_text(i*2+1,debug_items[i][1].call_func())
+		set_item_text(i*2+1,String(debug_items[i][1].call_func()))
 		i += 1
 	#set_item_text(1,format_float(player.velocity.x))
 	#set_item_text(3,format_float(player.velocity.y))
@@ -65,11 +98,7 @@ func _process(delta):
 func _on_Player_ready():
 	player = get_node(Gconst.PLAYER_PATH)
 	
-	var i = 0
-	while i < len(debug_items):
-		add_item(debug_items[i][0])
-		add_item("E")
-		i += 1
+	create_debug_items()
 	#add_item("velocity.x")
 	#add_item(String(player["velocity"].x))
 	#add_item("velocity.y")
@@ -92,5 +121,10 @@ func _on_Player_ready():
 
 
 func _on_hookshot_ready():
+	hs = get_node(Gconst.HOOKSHOT_PATH)
+	pass # Replace with function body.
 
+
+func _on_debugger_script_changed():
+	create_debug_items()
 	pass # Replace with function body.
