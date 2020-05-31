@@ -4,8 +4,8 @@ const MAX_RANGE = 800
 const MAX_TIME = 1
 const MIN_SPEED = 100
 const START_WINDOW_TIME = 0.08#5/60.0
-const HS_THROW_FRIC = 5
-const END_SLIDE_DURATION = 5.5
+const HS_THROW_FRIC = 2
+const END_SLIDE_DURATION = 0.05
 
 signal hs_extend #sent when the hookshot enters the extention state
 signal hs_miss #sent when the hookshot retracts without hitting anything
@@ -121,6 +121,7 @@ func _process(delta):
 		elif hs_state == EXTENDING:
 			hs_state = RETRACTING
 		elif hs_state == PULLING:
+			print_debug("pull canceled")
 			hs_state = INACTIVE
 			hs_dist = 0
 			emit_signal("hs_cancel")
@@ -138,7 +139,8 @@ func _process(delta):
 			emit_signal("hs_miss") #deceptive name
 			hs_state = INACTIVE
 		if hs_state == PULLING:
-			hs_state = END_SLIDE
+#			print_debug("END_SLIDE state set")
+			hs_state = INACTIVE
 			end_slide_timer = END_SLIDE_DURATION
 	elif hs_dist > MAX_RANGE:
 		hs_state = RETRACTING
@@ -154,7 +156,7 @@ func _process(delta):
 		if hs_start_window <= 0:
 			hs_state = INACTIVE
 	
-	update_hs_position()	
+	update_hs_position()
 	
 #	pass
 
@@ -170,5 +172,7 @@ func _on_hookshot_head_hs_hit(dir):
 
 
 func _on_Player_stop_hs():
-	hs_state = INACTIVE
+	print_debug("signal recived")
+	if hs_state != END_SLIDE:
+		hs_state = INACTIVE
 	hs_dist = 0

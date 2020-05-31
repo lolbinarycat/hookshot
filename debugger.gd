@@ -40,7 +40,8 @@ func get_hs_dir():
 	return str(hs.hs_dir)
 func get_hs_start_window():
 	return hs.hs_start_window
-
+func get_hs_end_slide_timer():
+	return hs.end_slide_timer
 
 
 var debug_items = [ #label, function name
@@ -54,7 +55,7 @@ var debug_items = [ #label, function name
 	["player.hs_active",funcref(self,"get_hs_active")],
 	["hs_pulling",funcref(self,"get_hs_pulling")],
 	["hs_dir",funcref(self,"get_hs_dir")],
-	["hs_start_window",funcref(self,"get_hs_start_window")]
+	["hs_end_slide_timer",funcref(self,"get_hs_end_slide_timer")]
 ]
 	
 

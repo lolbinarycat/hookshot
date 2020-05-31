@@ -115,13 +115,17 @@ func _physics_process(delta):
 	
 	if !hs_active or hs_pulling:
 		velocity = move_and_slide(Vector2(velocity.x,velocity.y),Vector2(0,-1))
-	if hs_pulling and (is_on_wall() or is_on_ceiling()):
+	if hs_pulling and (is_on_wall() or is_on_ceiling()): 
+		#stops the hookshot when you hit a wall
 		stop_hs()
 	# when adding down right and down left, make sure to add them here
 	elif hs_pulling and (get_node("hookshot").hs_dir == Gconst.DOWN or Gconst.DOWN_RIGHT or Gconst.DOWN_LEFT) and is_on_floor():
+		hs.hs_state = hs.END_SLIDE
+		hs.end_slide_timer = hs.END_SLIDE_DURATION
+#		breakpoint
+#		print_debug("hookshot")
 		stop_hs()
-			
-	
+
 
 	if is_on_floor():
 		timeFromGround = 0
@@ -184,7 +188,7 @@ func _on_hookshot_hs_miss():
 func _on_hs_head_hs_hit(dir):
 	hs_active = true
 	hs_pulling = true
-	var hs = get_node("hookshot")
+	#var hs = get_node("hookshot")
 	if dir == Gconst.RIGHT:
 		velocity = Vector2(hs.hs_speed*2,0)
 	elif dir == Gconst.LEFT:

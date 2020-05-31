@@ -34,6 +34,7 @@ func _ready():
 #		cam_change_timeout -= 1
 
 
+# warning-ignore:unused_argument
 func _on_camera_bounds_body_exited(body):
 	pass
 #	if body == player:
