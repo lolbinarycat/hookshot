@@ -10,6 +10,7 @@ const PLAYER_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/"
 const TILEMAP_PATH = NodePath("/root/Node2D/WorldEnvironment/TileMap/")
 const HOOKSHOT_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/hookshot/")
 const SAVE_FILE_PATH = "user://hookshot.save"
+const CONFIG_FILE_PATH = "user://hookshot.config"
 const TILES = {
 	"spikes" : 2,
 	"checkpoint" : 3

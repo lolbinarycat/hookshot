@@ -14,6 +14,10 @@ func save():  # this save fuction defines the variables to be saved for a node. 
 	}
 	return save_dict
 
+#func update_config():
+#	var config_file = File.new()
+#	config_file.open(Gconst.CONFIG_FILE_PATH,File.WRITE)
+	
 
 func save_game(): #saves the game. can be called from anywhere in the tree
 	var save_game = File.new()

@@ -1,10 +1,10 @@
 extends Position2D
 
 const MAX_RANGE = 800
-const MAX_TIME = 1
-const MIN_SPEED = 100
+const MAX_TIME = 1.5
+const MIN_SPEED = 140
 const START_WINDOW_TIME = 0.08#5/60.0
-const HS_THROW_FRIC = 2
+const HS_THROW_FRIC = 3
 const END_SLIDE_DURATION = 0.1
 
 signal hs_extend #sent when the hookshot enters the extention state
@@ -15,7 +15,6 @@ signal hs_cancel #sent when the hookshot is canceled WHILE PULLING THE PLAYER
 enum {INACTIVE,EXTENDING,RETRACTING,PULLING,STARTING,END_SLIDE} #pulling = hookshot hit a wall
 var hs_state = INACTIVE #what is the hookshot doing
 var hs_dist = 0.0 #how far is the end of the hookshot away from the player
-#enum {LEFT,RIGHT,UP,DOWN}
 var hs_dir
 var hs_dir_buffer = 0.0 #timer for how long you have to press a button after using the hookshot
 var hs_speed = 0.0

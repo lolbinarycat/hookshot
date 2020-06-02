@@ -28,6 +28,7 @@ Gconst="*res://global_constants.gd"
 window/size/height=608
 window/size/resizable=false
 window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [input]
 
@@ -46,11 +47,6 @@ ui_end={
 jump={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
- ]
-}
-reverse={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
  ]
 }
 hookshot={

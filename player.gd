@@ -2,19 +2,21 @@ extends KinematicBody2D
 
 # constants
 
-const JUMP_HEIGHT = 200
-#const JUMP_MOMENTUM_BOOST = 50 # how much
-#const
-const WALL_JUMP_HEIGHT = 200
-const WALL_JUMP_WIDTH = 100
+const JUMP_HEIGHT = 350#500
+const JUMP_MOMENTUM_BOOST = 50 # how much
+const JUMP_MOMENTUM_BOOST_SPEED = 200 
+const WALL_JUMP_HEIGHT = 400
+const WALL_JUMP_WIDTH = 250
 const WALL_JUMP_MIN_HEIGHT = 200
-const RUN_SPEED = 20
-const FRICTION = 1.2
-const AIR_FRICTION = 1.02
-const AIR_SPEED = 5
-const GRAVITY = 7.5
+const RUN_SPEED = 10#80
+const FRICTION = 5.2#1.2#1.14
+const AIR_FRICTION = 1.00
+const MAX_AIR_SPEED = 200
+const AIR_SPEED = 15
+#const AIR_SPEED_TURN_BOOST = 7
+const GRAVITY = 1900
 const IS_PLAYER = true
-const WALL_FRICTION = 1.07
+const WALL_FRICTION = 2
 
 signal stop_hs
 # Declare member variables here. Examples:
@@ -35,6 +37,7 @@ var hs_active = false
 var hs_pulling = false
 var is_on_collected_cp = false #whether or not the player is on a checkpoint that is already collected. this stops checkpoints from being collected every frame you are on them
 var tilemap
+var instant_controls = false
 #onready var hs = get_node(Gconst.HOOKSHOT_PATH)
 onready var hs = get_node("hookshot")
 
@@ -63,7 +66,11 @@ func stop_hs():
 	
 func jump():
 	emit_signal("stop_hs")
-	velocity.y = -JUMP_HEIGHT + -abs(velocity.x) / 3
+	velocity.y = -JUMP_HEIGHT #+ -abs(velocity.x) / 3
+	if abs(velocity.x) > JUMP_MOMENTUM_BOOST_SPEED:
+		velocity.y += -JUMP_MOMENTUM_BOOST
+	else:
+		velocity.y += (velocity.y/JUMP_MOMENTUM_BOOST_SPEED)*JUMP_MOMENTUM_BOOST
 	hs_active = false
 	hs_pulling = false
 	#if abs(velocity.x) > 
@@ -82,7 +89,7 @@ func get_tile_direction(): #no transform is up
 	var is_transp = tilemap.is_cell_transposed(cx,cy)
 	var is_x_flip = tilemap.is_cell_x_flipped(cx,cy)
 	var is_y_flip = tilemap.is_cell_y_flipped(cx,cy)
-	print_debug("t:"+str(is_transp)+"\nx:"+str(is_x_flip)+"\ny:"+str(is_y_flip))
+#	print_debug("t:"+str(is_transp)+"\nx:"+str(is_x_flip)+"\ny:"+str(is_y_flip))
 	if is_transp:
 		if is_x_flip:
 			return Gconst.LEFT
@@ -109,7 +116,7 @@ func react_to_tile():
 		is_on_collected_cp = false
 	
 	if tile == Gconst.TILES["spikes"]:
-		print_debug(get_tile_direction())
+#		print_debug(get_tile_direction())
 		var tileD = get_tile_direction()
 		if tileD == Gconst.UP and is_on_floor():
 			die()
@@ -153,7 +160,10 @@ func _physics_process(delta):
 #	elif is_on_wall():
 #		fallspeed = GRAVITY/3
 	elif Input.is_action_pressed("jump"): #variable jump height and slow falling
-		fallspeed = GRAVITY/2
+		if timeFromGround < 0.3:
+			fallspeed = GRAVITY/4
+		else:
+			fallspeed = GRAVITY/2
 	else:
 		fallspeed = GRAVITY
 	
@@ -175,23 +185,36 @@ func _physics_process(delta):
 		timeFromGround += 1*delta
 		
 	if !hs_active: #turns off input when hookshot is active
-		if  Input.is_action_pressed("ui_right"):
+#		if abs(velocity.x) < MAX_AIR_SPEED:
+		if  Input.is_action_pressed("ui_right") and velocity.x <= MAX_AIR_SPEED:
 			velocity.x += AIR_SPEED
-		elif Input.is_action_pressed("ui_left"):
+#				if velocity.x < 50:
+#				velocity.x += AIR_SPEED_TURN_BOOST			
+		elif Input.is_action_pressed("ui_left") and velocity.x >= -MAX_AIR_SPEED:
 			velocity.x -= AIR_SPEED
+#			if velocity.x > 50:
+#				velocity.x -= AIR_SPEED_TURN_BOOST
 			
 		if timeFromGround == 0 and hs.hs_state != hs.END_SLIDE:
 			if Input.is_action_pressed("ui_right"):
 				velocity.x += RUN_SPEED
 			elif Input.is_action_pressed("ui_left"):
 				velocity.x -= RUN_SPEED
-			velocity.x = velocity.x / FRICTION
-		elif timeFromGround > 0:
-			velocity.x = velocity.x / AIR_FRICTION
+			velocity.x = velocity.x * (1/ exp((FRICTION) * delta) )
+		elif timeFromGround > 0: 
+			velocity.x = velocity.x / AIR_FRICTION #* delta
 		#apply gravity:
-		velocity.y = velocity.y + fallspeed
+		velocity.y = velocity.y + fallspeed*delta
 		
-		if is_on_wall(): #and hs.hs_state == hs.END_SLIDE: #reduce fallspeed if on a wall
+		if instant_controls:
+			if Input.is_action_pressed("ui_left"):
+				velocity.x = -150
+			elif Input.is_action_pressed("ui_right"):
+				velocity.x = 150
+			else:
+				velocity.x = velocity.x/2
+		
+		if is_on_wall() and hs.hs_state != hs.END_SLIDE: #reduce fallspeed if on a wall
 			velocity.y = velocity.y / WALL_FRICTION
 			
 		
