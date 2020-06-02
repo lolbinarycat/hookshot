@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://player_new.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://respawn_pos.gd" type="Script" id=15]
 [ext_resource path="res://checkpoint.png" type="Texture" id=16]
 [ext_resource path="res://hookshot-head.png" type="Texture" id=17]
+[ext_resource path="res://pause_menu.gd" type="Script" id=18]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 8, 8, 0, 8, 0, 0, 8, 0 )
@@ -116,6 +117,12 @@ extents = Vector2( 512, 304 )
 
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 512, 608 )
+
+[sub_resource type="InputEventAction" id=13]
+action = "ui_end"
+
+[sub_resource type="ShortCut" id=12]
+shortcut = SubResource( 13 )
 
 [node name="Node2D" type="Node2D"]
 __meta__ = {
@@ -284,9 +291,9 @@ shape = SubResource( 9 )
 
 [node name="checkpoints" type="Node" parent="WorldEnvironment"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UIlayer" type="CanvasLayer" parent="."]
 
-[node name="debugger" type="ItemList" parent="CanvasLayer"]
+[node name="debugger" type="ItemList" parent="UIlayer"]
 modulate = Color( 1, 1, 1, 0.811765 )
 light_mask = 0
 use_parent_material = true
@@ -305,12 +312,44 @@ script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="ready" from="WorldEnvironment/respawn_pos/Player" to="CanvasLayer/debugger" method="_on_Player_ready"]
+
+[node name="pause_menu" type="Panel" parent="UIlayer"]
+pause_mode = 2
+visible = false
+margin_left = 128.0
+margin_top = 128.0
+margin_right = 896.0
+margin_bottom = 480.0
+script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UIlayer/pause_menu"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 80.0
+margin_bottom = 48.0
+rect_scale = Vector2( 4, 4 )
+size_flags_horizontal = 3
+text = "Paused"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="UIlayer/pause_menu"]
+margin_left = 32.0
+margin_top = 256.0
+margin_right = 128.0
+margin_bottom = 288.0
+shortcut = SubResource( 12 )
+text = "Quit (ESC)"
+[connection signal="ready" from="WorldEnvironment/respawn_pos/Player" to="UIlayer/debugger" method="_on_Player_ready"]
 [connection signal="stop_hs" from="WorldEnvironment/respawn_pos/Player" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_Player_stop_hs"]
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]
 [connection signal="hs_extend" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_extend"]
 [connection signal="hs_miss" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_miss"]
-[connection signal="ready" from="WorldEnvironment/respawn_pos/Player/hookshot" to="CanvasLayer/debugger" method="_on_hookshot_ready"]
+[connection signal="ready" from="WorldEnvironment/respawn_pos/Player/hookshot" to="UIlayer/debugger" method="_on_hookshot_ready"]
 [connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player" method="_on_hs_head_hs_hit"]
 [connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_hookshot_head_hs_hit"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane" to="WorldEnvironment/respawn_pos/Player" method="_on_death_plane_body_entered"]
@@ -321,4 +360,5 @@ __meta__ = {
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds3" to="WorldEnvironment/camera_bounds/camera_bounds3" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds4" to="WorldEnvironment/camera_bounds/camera_bounds4" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds5" to="WorldEnvironment/camera_bounds/camera_bounds5" method="_on_camera_bounds_body_entered"]
-[connection signal="script_changed" from="CanvasLayer/debugger" to="CanvasLayer/debugger" method="_on_debugger_script_changed"]
+[connection signal="script_changed" from="UIlayer/debugger" to="UIlayer/debugger" method="_on_debugger_script_changed"]
+[connection signal="button_up" from="UIlayer/pause_menu/Button" to="UIlayer/pause_menu" method="_on_Button_button_up"]

@@ -12,6 +12,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # warning-ignore:unused_argument
-func _process(delta):
-		if Input.is_action_just_released("ui_end"):
-			get_tree().quit()
+#func _process(delta):
+		#if Input.is_action_just_released("ui_end"):
+		#	get_tree().quit()
