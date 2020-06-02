@@ -51,10 +51,10 @@ func get_which_wall_collided():
 	for i in range(get_slide_count()):
 		var collision = get_slide_collision(i)
 		if collision.normal.x > 0:
-			return LEFT
+			return Gconst.LEFT
 		elif collision.normal.x < 0:
-			return RIGHT
-	return NONE
+			return Gconst.RIGHT
+	return null
 
 func stop_hs():
 	emit_signal("stop_hs")
@@ -75,7 +75,48 @@ func get_tile_under():
 	else:
 		print_debug("unable to get tilemap")
 		return
+
+func get_tile_direction(): #no transform is up
+	var cx = global_position.x/32 #cell x
+	var cy = global_position.y/32
+	var is_transp = tilemap.is_cell_transposed(cx,cy)
+	var is_x_flip = tilemap.is_cell_x_flipped(cx,cy)
+	var is_y_flip = tilemap.is_cell_y_flipped(cx,cy)
+	print_debug("t:"+str(is_transp)+"\nx:"+str(is_x_flip)+"\ny:"+str(is_y_flip))
+	if is_transp:
+		if is_x_flip:
+			return Gconst.LEFT
+		else:
+			return Gconst.RIGHT
+	else:
+#		if !is_x_flip:
+		if is_y_flip: 
+			return Gconst.DOWN
+		else:
+			return Gconst.UP
+		
 	
+#checks for things like spikes and checkpoints
+func react_to_tile():
+	var tile = get_tile_under()
+	if tile == Gconst.TILES["checkpoint"]:#tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
+		get_parent().position = global_position
+		if !is_on_collected_cp:
+			get_parent().save_game()
+			is_on_collected_cp = true
+		position = Vector2(0,0)
+	else:
+		is_on_collected_cp = false
+	
+	if tile == Gconst.TILES["spikes"]:
+		print_debug(get_tile_direction())
+		var tileD = get_tile_direction()
+		if tileD == Gconst.UP and is_on_floor():
+			die()
+		elif tileD == Gconst.DOWN and is_on_ceiling():
+			die()
+		elif tileD == get_which_wall_collided():
+			die()
 # end of custom functions
 	
 # Called when the node enters the scene tree for the first time.
@@ -88,16 +129,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # warning-ignore:unused_argument
-func _process(delta):
-	if tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
-			get_parent().position = global_position
-			if !is_on_collected_cp:  
-				get_parent().save_game()
-				is_on_collected_cp = true
-			position = Vector2(0,0)
-	else:
-		is_on_collected_cp = false
-	pass
+#func _process(delta):
+#	if tilemap.get_cell(global_position.x/32,global_position.y/32) == 3: # if player is on checkpoint
+#		get_parent().position = global_position
+#		if !is_on_collected_cp:
+#			get_parent().save_game()
+#			is_on_collected_cp = true
+#		position = Vector2(0,0)
+#	else:
+#		is_on_collected_cp = false
+#	pass
 	#debug
 #	print_debug(velocity.x)
 	#print_debug(is_on_floor())
@@ -118,7 +159,7 @@ func _physics_process(delta):
 	
 	if !hs_active or hs_pulling:
 		velocity = move_and_slide(Vector2(velocity.x,velocity.y),Vector2(0,-1))
-	if hs_pulling and (is_on_wall() or is_on_ceiling()): 
+	if hs_pulling and (is_on_wall() or is_on_ceiling()):
 		#stops the hookshot when you hit a wall
 		hs.enter_end_slide()
 		stop_hs()
@@ -148,7 +189,7 @@ func _physics_process(delta):
 		elif timeFromGround > 0:
 			velocity.x = velocity.x / AIR_FRICTION
 		#apply gravity:
-		velocity.y = velocity.y + fallspeed 
+		velocity.y = velocity.y + fallspeed
 		
 		if is_on_wall(): #and hs.hs_state == hs.END_SLIDE: #reduce fallspeed if on a wall
 			velocity.y = velocity.y / WALL_FRICTION
@@ -166,12 +207,14 @@ func _physics_process(delta):
 		
 	if timeFromWall < 0.1 and Input.is_action_just_pressed("jump") and timeFromGround != 0  :
 		velocity.y -= WALL_JUMP_HEIGHT
-		if lastWallDir == RIGHT:
+		if lastWallDir == Gconst.RIGHT:
 			velocity.x = -WALL_JUMP_WIDTH
-		elif lastWallDir == LEFT:
+		elif lastWallDir == Gconst.LEFT:
 			velocity.x = WALL_JUMP_WIDTH
 		if velocity.y > -WALL_JUMP_MIN_HEIGHT:
 			velocity.y = -WALL_JUMP_MIN_HEIGHT
+			
+	react_to_tile()
 	#spikes
 	#if is_on_wall() or is_on_ceiling() or is_on_floor():
 	#	if get_node(Gconst.TILEMAP_PATH).get_cellv(position) == 2:
