@@ -5,7 +5,7 @@ const MAX_TIME = 1
 const MIN_SPEED = 100
 const START_WINDOW_TIME = 0.08#5/60.0
 const HS_THROW_FRIC = 2
-const END_SLIDE_DURATION = 0.05
+const END_SLIDE_DURATION = 0.1
 
 signal hs_extend #sent when the hookshot enters the extention state
 signal hs_miss #sent when the hookshot retracts without hitting anything
@@ -105,6 +105,11 @@ func update_hs_position():
 		position = Vector2(hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
 	elif hs_dir == Gconst.UP_LEFT:
 		position = Vector2(-hs_dist*Gconst.D_VECTOR_CO,-hs_dist*Gconst.D_VECTOR_CO)
+
+func enter_end_slide():
+	hs_state = END_SLIDE
+	end_slide_timer = END_SLIDE_DURATION
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_parent()
@@ -172,7 +177,7 @@ func _on_hookshot_head_hs_hit(dir):
 
 
 func _on_Player_stop_hs():
-	print_debug("signal recived")
+#	print_debug("signal recived")
 	if hs_state != END_SLIDE:
 		hs_state = INACTIVE
 	hs_dist = 0

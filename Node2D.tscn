@@ -289,10 +289,9 @@ shape = SubResource( 9 )
 [node name="debugger" parent="CanvasLayer" instance=ExtResource( 14 )]
 modulate = Color( 1, 1, 1, 0.811765 )
 margin_left = 0.0
-margin_right = 209.0
+margin_right = 260.0
 margin_bottom = 9.0
 rect_min_size = Vector2( 20.49, 0 )
-rect_rotation = 360.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 size_flags_stretch_ratio = 0.0
@@ -303,8 +302,8 @@ custom_colors/font_color = Color( 0.564706, 0.745098, 0.756863, 1 )
 [connection signal="hs_extend" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_extend"]
 [connection signal="hs_miss" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_miss"]
 [connection signal="ready" from="WorldEnvironment/respawn_pos/Player/hookshot" to="CanvasLayer/debugger" method="_on_hookshot_ready"]
-[connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_hookshot_head_hs_hit"]
 [connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player" method="_on_hs_head_hs_hit"]
+[connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_hookshot_head_hs_hit"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane" to="WorldEnvironment/respawn_pos/Player" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane2" to="WorldEnvironment/death_planes/death_plane2" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane3" to="WorldEnvironment/death_planes/death_plane3" method="_on_death_plane_body_entered"]

@@ -14,6 +14,7 @@ const AIR_FRICTION = 1.02
 const AIR_SPEED = 5
 const GRAVITY = 7.5
 const IS_PLAYER = true
+const WALL_FRICTION = 1.07
 
 signal stop_hs
 # Declare member variables here. Examples:
@@ -34,7 +35,8 @@ var hs_active = false
 var hs_pulling = false
 var is_on_collected_cp = false #whether or not the player is on a checkpoint that is already collected. this stops checkpoints from being collected every frame you are on them
 var tilemap
-var hs
+#onready var hs = get_node(Gconst.HOOKSHOT_PATH)
+onready var hs = get_node("hookshot")
 
 func go_to_spawnpoint():
 # warning-ignore:return_value_discarded
@@ -79,7 +81,6 @@ func get_tile_under():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tilemap = get_node(Gconst.TILEMAP_PATH)
-	hs = get_node(Gconst.HOOKSHOT_PATH)
 	pass
 	#print_debug(get_path())
 	
@@ -108,6 +109,8 @@ func _process(delta):
 func _physics_process(delta):
 	if hs_active:
 		fallspeed = 0
+#	elif is_on_wall():
+#		fallspeed = GRAVITY/3
 	elif Input.is_action_pressed("jump"): #variable jump height and slow falling
 		fallspeed = GRAVITY/2
 	else:
@@ -117,13 +120,11 @@ func _physics_process(delta):
 		velocity = move_and_slide(Vector2(velocity.x,velocity.y),Vector2(0,-1))
 	if hs_pulling and (is_on_wall() or is_on_ceiling()): 
 		#stops the hookshot when you hit a wall
+		hs.enter_end_slide()
 		stop_hs()
 	# when adding down right and down left, make sure to add them here
 	elif hs_pulling and (get_node("hookshot").hs_dir == Gconst.DOWN or Gconst.DOWN_RIGHT or Gconst.DOWN_LEFT) and is_on_floor():
-		hs.hs_state = hs.END_SLIDE
-		hs.end_slide_timer = hs.END_SLIDE_DURATION
-#		breakpoint
-#		print_debug("hookshot")
+		hs.enter_end_slide()
 		stop_hs()
 
 
@@ -145,8 +146,13 @@ func _physics_process(delta):
 				velocity.x -= RUN_SPEED
 			velocity.x = velocity.x / FRICTION
 		elif timeFromGround > 0:
-			velocity.y = velocity.y + fallspeed
 			velocity.x = velocity.x / AIR_FRICTION
+		#apply gravity:
+		velocity.y = velocity.y + fallspeed 
+		
+		if is_on_wall(): #and hs.hs_state == hs.END_SLIDE: #reduce fallspeed if on a wall
+			velocity.y = velocity.y / WALL_FRICTION
+			
 		
 	if timeFromGround < 0.2:
 		if Input.is_action_just_pressed("jump"):

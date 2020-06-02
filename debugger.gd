@@ -39,9 +39,9 @@ func get_hs_pulling():
 func get_hs_dir():
 	return str(hs.hs_dir)
 func get_hs_start_window():
-	return hs.hs_start_window
+	return format_float(hs.hs_start_window)
 func get_hs_end_slide_timer():
-	return hs.end_slide_timer
+	return format_float(hs.end_slide_timer)
 
 
 var debug_items = [ #label, function name
