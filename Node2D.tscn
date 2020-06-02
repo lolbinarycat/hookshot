@@ -13,7 +13,7 @@
 [ext_resource path="res://default_env.tres" type="Environment" id=11]
 [ext_resource path="res://camera_bounds.gd" type="Script" id=12]
 [ext_resource path="res://death_plane.gd" type="Script" id=13]
-[ext_resource path="res://debugger.tscn" type="PackedScene" id=14]
+[ext_resource path="res://debugger.gd" type="Script" id=14]
 [ext_resource path="res://respawn_pos.gd" type="Script" id=15]
 [ext_resource path="res://checkpoint.png" type="Texture" id=16]
 [ext_resource path="res://hookshot-head.png" type="Texture" id=17]
@@ -286,9 +286,10 @@ shape = SubResource( 9 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="debugger" parent="CanvasLayer" instance=ExtResource( 14 )]
+[node name="debugger" type="ItemList" parent="CanvasLayer"]
 modulate = Color( 1, 1, 1, 0.811765 )
-margin_left = 0.0
+light_mask = 0
+use_parent_material = true
 margin_right = 260.0
 margin_bottom = 9.0
 rect_min_size = Vector2( 20.49, 0 )
@@ -296,6 +297,14 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 size_flags_stretch_ratio = 0.0
 custom_colors/font_color = Color( 0.564706, 0.745098, 0.756863, 1 )
+select_mode = 1
+max_text_lines = 2
+auto_height = true
+max_columns = 2
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="ready" from="WorldEnvironment/respawn_pos/Player" to="CanvasLayer/debugger" method="_on_Player_ready"]
 [connection signal="stop_hs" from="WorldEnvironment/respawn_pos/Player" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_Player_stop_hs"]
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]
