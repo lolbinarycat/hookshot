@@ -9,6 +9,7 @@ enum {LEFT,RIGHT,UP,DOWN,DOWN_RIGHT,DOWN_LEFT,UP_RIGHT,UP_LEFT}
 const PLAYER_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/")
 const TILEMAP_PATH = NodePath("/root/Node2D/WorldEnvironment/TileMap/")
 const HOOKSHOT_PATH = NodePath("/root/Node2D/WorldEnvironment/respawn_pos/Player/hookshot/")
+const WORLD_PATH = NodePath("/root/Node2D/WorldEnvironment")
 const SAVE_FILE_PATH = "user://hookshot.save"
 const CONFIG_FILE_PATH = "user://hookshot.config"
 const TILES = {

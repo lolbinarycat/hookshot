@@ -14,7 +14,7 @@ const AIR_FRICTION = 1.00
 const MAX_AIR_SPEED = 200
 const AIR_SPEED = 15
 #const AIR_SPEED_TURN_BOOST = 7
-const GRAVITY = 1900
+const GRAVITY = 1900.0
 const IS_PLAYER = true
 const WALL_FRICTION = 2
 

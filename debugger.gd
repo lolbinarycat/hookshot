@@ -8,6 +8,7 @@ var player
 var hs
 var test = null
 var velocity_x
+var debugger_started = false
 #so many things could have prevented this horrible 
 #workaround from being neccececary
 #for example:
@@ -80,6 +81,13 @@ func create_debug_items():
 		add_item("E")
 		i += 1
 
+func try_create_debug_items():
+	player = get_node(Gconst.PLAYER_PATH)
+	hs = get_node(Gconst.HOOKSHOT_PATH)
+	if hs != null and player != null:
+		create_debug_items()
+		debugger_started = true
+
 func _ready():
 	player = get_node(Gconst.PLAYER_PATH)
 	pass # Replace with function body.
@@ -88,10 +96,13 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # warning-ignore:unused_argument
 func _process(delta):
-	var i = 0
-	while i < len(debug_items):
-		set_item_text(i*2+1,String(debug_items[i][1].call_func()))
-		i += 1
+	if debugger_started:
+		var i = 0
+		while i < len(debug_items):
+			set_item_text(i*2+1,String(debug_items[i][1].call_func()))
+			i += 1
+	else:
+		try_create_debug_items()
 	#set_item_text(1,format_float(player.velocity.x))
 	#set_item_text(3,format_float(player.velocity.y))
 #	#get_node("velocity_x").text = String(player.velocity.y)
@@ -103,9 +114,12 @@ func _process(delta):
 
 
 func _on_Player_ready():
-	player = get_node(Gconst.PLAYER_PATH)
-	
-	create_debug_items()
+	try_create_debug_items()
+#	player = get_node(Gconst.PLAYER_PATH)
+#	hs = get_node(Gconst.HOOKSHOT_PATH)
+#	if hs != null and player != nill:
+#		create_debug_items()
+#		debugger_started = true
 	#add_item("velocity.x")
 	#add_item(String(player["velocity"].x))
 	#add_item("velocity.y")
@@ -128,7 +142,6 @@ func _on_Player_ready():
 
 
 func _on_hookshot_ready():
-	hs = get_node(Gconst.HOOKSHOT_PATH)
 	pass # Replace with function body.
 
 

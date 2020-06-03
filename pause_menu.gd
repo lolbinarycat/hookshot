@@ -42,4 +42,13 @@ func _on_Button2_button_up():
 	get_node(Gconst.PLAYER_PATH).global_position = Vector2(512,304)
 	menu_open = false
 	update_menu_state()
-	pass # Replace with function body.
+
+
+func _on_quit_button_button_up():
+	get_tree().quit()
+
+
+
+func _on_resume_button_button_down():
+	menu_open = false
+	update_menu_state()
