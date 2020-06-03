@@ -513,6 +513,7 @@ region_enabled = true
 region_rect = Rect2( 0, 8, 8, 16 )
 
 [node name="UIlayer" type="CanvasLayer" parent="."]
+pause_mode = 2
 
 [node name="debugger" type="ItemList" parent="UIlayer"]
 process_priority = -1

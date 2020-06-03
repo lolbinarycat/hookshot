@@ -26,7 +26,8 @@ func load_config():
 	config = parse_json(config_file.get_line())
 
 func start_game():
-	get_node(Gconst.WORLD_PATH).pause_mode = Node.PAUSE_MODE_INHERIT
+#	get_node(Gconst.WORLD_PATH).pause_mode = Node.PAUSE_MODE_INHERIT
+	get_tree().paused = false
 	visible = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,8 +38,10 @@ func _ready():
 	pass # Replace with function body.
 
 func _enter_tree():
-	get_node(Gconst.WORLD_PATH).pause_mode = Node.PAUSE_MODE_STOP
-	pass
+#	get_node(Gconst.WORLD_PATH).pause_mode = Node.PAUSE_MODE_STOP
+	get_tree().paused = true
+#
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

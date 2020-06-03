@@ -42,8 +42,9 @@ var instant_controls = false
 onready var hs = get_node("hookshot")
 
 func go_to_spawnpoint():
+	position = Vector2(0,0)
 # warning-ignore:return_value_discarded
-	get_tree().reload_current_scene()
+#	get_tree().reload_current_scene()
 	#velocity = Vector2(0,0)
 	#global_position = global_position + Vector2(4,0) #= get_parent().global_position
 func die():
