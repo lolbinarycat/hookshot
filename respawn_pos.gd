@@ -21,7 +21,7 @@ func save():  # this save fuction defines the variables to be saved for a node. 
 
 func save_game(): #saves the game. can be called from anywhere in the tree
 	var save_game = File.new()
-	save_game.open(Gconst.SAVE_FILE_PATH, File.WRITE)
+	save_game.open(Gconst.config.save_file_path, File.WRITE)
 	var save_nodes = get_tree().get_nodes_in_group("Persist")
 	for node in save_nodes:
 		# Check the node is an instanced scene so it can be instanced again during load
@@ -43,8 +43,8 @@ func save_game(): #saves the game. can be called from anywhere in the tree
 
 func load_game(): #path independant
 	var save_game = File.new()
-	
-	if not save_game.file_exists(Gconst.SAVE_FILE_PATH):
+	print_debug("l:"+Gconst.config.save_file_path)
+	if not save_game.file_exists(Gconst.config.save_file_path):
 		print_debug("save file not found")
 		return
 	
@@ -54,7 +54,7 @@ func load_game(): #path independant
 
 	# Load the file line by line and process that dictionary to restore
 	# the object it represents.
-	save_game.open(Gconst.SAVE_FILE_PATH, File.READ)
+	save_game.open(Gconst.config.save_file_path, File.READ)
 	while save_game.get_position() < save_game.get_len():
 		# Get the saved dictionary from the next line in the save file
 		var node_data = parse_json(save_game.get_line())
@@ -73,10 +73,16 @@ func load_game(): #path independant
 	save_game.close()
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	load_game()
+	
+#	load_game()
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_start_button_button_up():
+	load_game()
+	pass # Replace with function body.

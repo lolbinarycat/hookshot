@@ -1,6 +1,11 @@
 extends Area2D
 
 #const CAM_TOUT = 5 #number of frames after a camera transition you will be restriced from another for
+#to prevent a glitch, there is 
+#a bit of space between camera bounds
+#this variable says how much space to add
+#back in around them
+const BORDER_PADDING = 16 
 
 var player #get_node(Gconst.PLAYER_PATH)
 #print_debug(player)
@@ -52,9 +57,9 @@ func _on_camera_bounds_body_entered(body):
 ##		#cam_lock_c = cam_lock_c + 1
 #		print_debug(cam_lock_c)
 #
-		camera_node.set_limit(MARGIN_RIGHT,position.x+size.x)
-		camera_node.set_limit(MARGIN_LEFT,position.x-size.x)
-		camera_node.set_limit(MARGIN_BOTTOM,position.y+size.y)
-		camera_node.set_limit(MARGIN_TOP,position.y-size.y)
+		camera_node.set_limit(MARGIN_RIGHT,position.x+size.x+BORDER_PADDING)
+		camera_node.set_limit(MARGIN_LEFT,position.x-size.x-BORDER_PADDING)
+		camera_node.set_limit(MARGIN_BOTTOM,position.y+size.y+BORDER_PADDING)
+		camera_node.set_limit(MARGIN_TOP,position.y-size.y-BORDER_PADDING)
 #		#cam_change_timeout = CAM_TOUT
 	pass # Replace with function body.

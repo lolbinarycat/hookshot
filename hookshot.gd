@@ -24,22 +24,23 @@ var end_slide_timer = 0.0
 var player
 
 func get_direction():
-	if Input.is_action_pressed("ui_left"):
-		if Input.is_action_pressed("ui_down"):
-			return Gconst.DOWN_LEFT
-		elif Input.is_action_pressed("ui_up"):
-			return Gconst.UP_LEFT
-		return Gconst.LEFT
-	elif Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("ui_right"):
 		if Input.is_action_pressed("ui_down"):
 			return Gconst.DOWN_RIGHT
 		elif Input.is_action_pressed("ui_up"):
 			return Gconst.UP_RIGHT
 		return Gconst.RIGHT
-	elif Input.is_action_pressed("ui_up"):
-		return Gconst.UP
+	elif Input.is_action_pressed("ui_left"):
+		if Input.is_action_pressed("ui_down"):
+			return Gconst.DOWN_LEFT
+		elif Input.is_action_pressed("ui_up"):
+			return Gconst.UP_LEFT
+		return Gconst.LEFT
 	elif Input.is_action_pressed("ui_down"):
 		return Gconst.DOWN
+	elif Input.is_action_pressed("ui_up"):
+		return Gconst.UP
+
 
 # warning-ignore:unused_argument
 func start_hs(delta):

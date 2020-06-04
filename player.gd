@@ -2,9 +2,9 @@ extends KinematicBody2D
 
 # constants
 
-const JUMP_HEIGHT = 350#500
-const JUMP_MOMENTUM_BOOST = 50 # how much
-const JUMP_MOMENTUM_BOOST_SPEED = 200 
+const JUMP_HEIGHT = 300#500
+const JUMP_MOMENTUM_BOOST = 70 # how much
+const JUMP_MOMENTUM_BOOST_SPEED = 200
 const WALL_JUMP_HEIGHT = 400
 const WALL_JUMP_WIDTH = 250
 const WALL_JUMP_MIN_HEIGHT = 200
@@ -16,7 +16,8 @@ const AIR_SPEED = 15
 #const AIR_SPEED_TURN_BOOST = 7
 const GRAVITY = 1900.0
 const IS_PLAYER = true
-const WALL_FRICTION = 2
+const WALL_FRICTION = 1.4
+const CLIMB_SPEED = 120
 
 signal stop_hs
 # Declare member variables here. Examples:
@@ -28,6 +29,7 @@ var velocity = {
 	y = 0
 }
 var fallspeed = GRAVITY
+var frict = FRICTION
 
 var timeFromGround = 800
 var timeFromWall = 800
@@ -38,16 +40,23 @@ var hs_pulling = false
 var is_on_collected_cp = false #whether or not the player is on a checkpoint that is already collected. this stops checkpoints from being collected every frame you are on them
 var tilemap
 var instant_controls = false
+var crouching = false
+var climbing = false
+onready var eyes = get_node("eyes")
 #onready var hs = get_node(Gconst.HOOKSHOT_PATH)
 onready var hs = get_node("hookshot")
 
 func go_to_spawnpoint():
 	position = Vector2(0,0)
+	velocity = Vector2(0,0)
 # warning-ignore:return_value_discarded
 #	get_tree().reload_current_scene()
 	#velocity = Vector2(0,0)
 	#global_position = global_position + Vector2(4,0) #= get_parent().global_position
 func die():
+	var deathparts = get_node("../../death_particles")
+	deathparts.global_position = global_position
+	deathparts.emitting = true
 	go_to_spawnpoint()
 
 
@@ -71,7 +80,8 @@ func jump():
 	if abs(velocity.x) > JUMP_MOMENTUM_BOOST_SPEED:
 		velocity.y += -JUMP_MOMENTUM_BOOST
 	else:
-		velocity.y += (velocity.y/JUMP_MOMENTUM_BOOST_SPEED)*JUMP_MOMENTUM_BOOST
+		pass
+		velocity.y -= (abs(velocity.x)/JUMP_MOMENTUM_BOOST_SPEED)*JUMP_MOMENTUM_BOOST
 	hs_active = false
 	hs_pulling = false
 	#if abs(velocity.x) > 
@@ -98,7 +108,7 @@ func get_tile_direction(): #no transform is up
 			return Gconst.RIGHT
 	else:
 #		if !is_x_flip:
-		if is_y_flip: 
+		if is_y_flip:
 			return Gconst.DOWN
 		else:
 			return Gconst.UP
@@ -125,6 +135,59 @@ func react_to_tile():
 			die()
 		elif tileD == get_which_wall_collided():
 			die()
+			
+			
+func crouch_process():
+	if hs.hs_state == hs.INACTIVE:
+		if (Input.is_action_pressed("ui_down")
+			and !climbing):
+			crouching = true
+		else:
+			crouching = false
+	get_node("normal_hitbox").disabled = crouching
+	get_node("normal_hitbox").visible = !crouching
+	
+func eyes_process():
+#	var dir = hs.get_direction()
+#	if dir == null:
+	eyes.position = Vector2(0,0)
+	if Input.is_action_pressed("ui_down"):
+		eyes.position.y = 1.5
+	elif Input.is_action_pressed("ui_up"):
+		eyes.position.y = -1
+	if Input.is_action_pressed("ui_right"):
+		eyes.position.x = 1
+	elif Input.is_action_pressed("ui_left"):
+		eyes.position.x = -1
+#	elif dir == Gconst.UP_LEFT:
+#		eyes.position = Vector2()
+
+func climbing_process():
+	if is_on_wall() and Input.is_action_pressed("climb"):
+		climbing = true
+	#stop climbing if the player:
+	# - releses climb
+	# - jumps
+	# - uses the hookshot
+	if Input.is_action_just_released("climb") or Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("hookshot"):
+		climbing = false
+	if !is_on_wall():
+		climbing = false
+
+	if climbing:
+		if Input.is_action_pressed("ui_up"):
+			velocity.y = -CLIMB_SPEED
+		elif Input.is_action_pressed("ui_down"):
+			velocity.y = CLIMB_SPEED
+		else:
+			velocity.y = 0
+		
+		#make the player "stick" to the wall if they are climbing
+		if get_which_wall_collided() == Gconst.LEFT:
+			velocity.x = -100
+		else:
+			velocity.x = 100
+
 # end of custom functions
 	
 # Called when the node enters the scene tree for the first time.
@@ -156,6 +219,10 @@ func _ready():
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
+	
+	crouch_process()
+	eyes_process()
+	
 	if hs_active:
 		fallspeed = 0
 #	elif is_on_wall():
@@ -165,6 +232,8 @@ func _physics_process(delta):
 			fallspeed = GRAVITY/4
 		else:
 			fallspeed = GRAVITY/2
+	elif Input.is_action_pressed("ui_down"):
+		fallspeed = GRAVITY*1.5
 	else:
 		fallspeed = GRAVITY
 	
@@ -201,9 +270,18 @@ func _physics_process(delta):
 				velocity.x += RUN_SPEED
 			elif Input.is_action_pressed("ui_left"):
 				velocity.x -= RUN_SPEED
-			velocity.x = velocity.x * (1/ exp((FRICTION) * delta) )
-		elif timeFromGround > 0: 
-			velocity.x = velocity.x / AIR_FRICTION #* delta
+			frict = FRICTION
+			if crouching:
+				frict = frict*4
+			
+		elif timeFromGround > 0:
+			frict = AIR_FRICTION
+#			velocity.x = velocity.x / AIR_FRICTION #* delta
+		elif hs.hs_state == hs.END_SLIDE:
+			frict = 0
+		
+		#apply friction (i have no idea if this formula makes sense)
+		velocity.x = velocity.x * (1/ exp((frict) * delta) )
 		#apply gravity:
 		velocity.y = velocity.y + fallspeed*delta
 		
@@ -217,7 +295,9 @@ func _physics_process(delta):
 		
 		if is_on_wall() and hs.hs_state != hs.END_SLIDE: #reduce fallspeed if on a wall
 			velocity.y = velocity.y / WALL_FRICTION
-			
+		
+		#climbing
+		climbing_process()
 		
 	if timeFromGround < 0.2:
 		if Input.is_action_just_pressed("jump"):

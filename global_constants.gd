@@ -17,7 +17,9 @@ const TILES = {
 	"checkpoint" : 3
 }
 #var player = get_root()
-
+var config = {
+	"save_file_path" : "user://hookshot.save"
+}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

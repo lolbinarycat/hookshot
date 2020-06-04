@@ -52,3 +52,12 @@ func _on_quit_button_button_up():
 func _on_resume_button_button_down():
 	menu_open = false
 	update_menu_state()
+
+
+#func _on_ret_to_title_button_button_up():
+#	pass # Replace with function body.
+
+
+func _on_ret_to_title_button_pressed():
+	get_tree().reload_current_scene()
+	pass # Replace with function body.
