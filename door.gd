@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-signal door_opened
+signal door_activated
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -12,9 +12,7 @@ func save():
 	}
 	return save_dict
 
-func open_door():
-	position.y += -64
-	emit_signal("door_opened")
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,7 +24,5 @@ func _ready():
 #	pass
 
 
-func _on_Button_body_entered(body):
-	if body == get_node(Gconst.PLAYER_PATH):
-		open_door()
-	pass # Replace with function body.
+
+#	pass # Replace with function body.

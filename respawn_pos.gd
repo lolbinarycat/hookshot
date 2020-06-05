@@ -65,6 +65,8 @@ func load_game(): #path independant
 		var node = get_node(node_data["path"])
 		node.position = Vector2(node_data["pos_x"], node_data["pos_y"])
 
+#		if node_data["custom_load_function"]:
+#			node.load_node(node_data)
 		# Now we set the remaining variables.
 #		for i in node_data.keys():
 #			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
