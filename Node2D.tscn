@@ -609,7 +609,6 @@ __meta__ = {
 
 [node name="start_menu" type="Panel" parent="UIlayer"]
 pause_mode = 2
-visible = false
 margin_right = 1024.0
 margin_bottom = 608.0
 script = ExtResource( 25 )
@@ -633,9 +632,9 @@ __meta__ = {
 
 [node name="button_align" type="Control" parent="UIlayer/start_menu"]
 margin_left = 448.0
-margin_top = 208.0
+margin_top = 160.0
 margin_right = 576.0
-margin_bottom = 368.0
+margin_bottom = 416.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -643,22 +642,34 @@ __meta__ = {
 [node name="start_button" type="Button" parent="UIlayer/start_menu/button_align"]
 margin_right = 128.0
 margin_bottom = 32.0
-text = "Start game"
+text = "Continue Game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="quit_button" type="Button" parent="UIlayer/start_menu/button_align"]
+[node name="new_game_button" type="Button" parent="UIlayer/start_menu/button_align"]
+margin_top = 64.0
+margin_right = 128.0
+margin_bottom = 96.0
+text = "New Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="save_file_button" type="Button" parent="UIlayer/start_menu/button_align"]
 margin_top = 128.0
 margin_right = 128.0
 margin_bottom = 160.0
-text = "Quit"
+text = "change save file"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="save_file_popup" type="FileDialog" parent="UIlayer/start_menu/button_align/quit_button"]
+[node name="save_file_popup" type="FileDialog" parent="UIlayer/start_menu/button_align/save_file_button"]
 margin_left = -64.0
-margin_top = -128.0
+margin_top = -64.0
 margin_right = 656.0
-margin_bottom = 288.0
+margin_bottom = 352.0
 window_title = "Open a File"
 resizable = true
 mode = 0
@@ -667,14 +678,19 @@ current_dir = "user://"
 current_file = "hookshot.save"
 current_path = "user://hookshot.save"
 
-[node name="save_file_button" type="Button" parent="UIlayer/start_menu/button_align"]
-margin_top = 64.0
+[node name="quit_button" type="Button" parent="UIlayer/start_menu/button_align"]
+margin_top = 192.0
 margin_right = 128.0
-margin_bottom = 96.0
-text = "change save file"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_bottom = 224.0
+text = "Quit"
+
+[node name="save_toggle" type="CheckBox" parent="UIlayer/start_menu"]
+margin_left = 608.0
+margin_top = 272.0
+margin_right = 736.0
+margin_bottom = 304.0
+pressed = true
+text = "disable saving"
 
 [node name="pause_menu" type="Panel" parent="UIlayer"]
 pause_mode = 2
@@ -895,9 +911,10 @@ __meta__ = {
 [connection signal="script_changed" from="UIlayer/debugger" to="UIlayer/debugger" method="_on_debugger_script_changed"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="WorldEnvironment/respawn_pos" method="_on_start_button_button_up"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="UIlayer/start_menu" method="_on_start_button_button_up"]
-[connection signal="button_up" from="UIlayer/start_menu/button_align/quit_button" to="UIlayer/pause_menu" method="_on_quit_button_button_up"]
-[connection signal="file_selected" from="UIlayer/start_menu/button_align/quit_button/save_file_popup" to="UIlayer/start_menu" method="_on_save_file_popup_file_selected"]
+[connection signal="pressed" from="UIlayer/start_menu/button_align/new_game_button" to="UIlayer/start_menu" method="_on_new_game_button_pressed"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/save_file_button" to="UIlayer/start_menu" method="_on_save_file_button_button_up"]
+[connection signal="file_selected" from="UIlayer/start_menu/button_align/save_file_button/save_file_popup" to="UIlayer/start_menu" method="_on_save_file_popup_file_selected"]
+[connection signal="button_up" from="UIlayer/start_menu/button_align/quit_button" to="UIlayer/pause_menu" method="_on_quit_button_button_up"]
 [connection signal="button_up" from="UIlayer/pause_menu/quit_button" to="UIlayer/pause_menu" method="_on_Button_button_up"]
 [connection signal="button_up" from="UIlayer/pause_menu/ret_to_start_button" to="UIlayer/pause_menu" method="_on_Button2_button_up"]
 [connection signal="button_down" from="UIlayer/pause_menu/resume_button" to="UIlayer/pause_menu" method="_on_resume_button_button_down"]

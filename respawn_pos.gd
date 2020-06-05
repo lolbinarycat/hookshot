@@ -42,6 +42,10 @@ func save_game(): #saves the game. can be called from anywhere in the tree
 	save_game.close()
 
 func load_game(): #path independant
+	if Gconst.is_new_game:#get_node("/root/Node2D/UIlayer/start_menu/save_toggle").pressed == true:
+		print_debug("new game, not loading save")
+		return
+		
 	var save_game = File.new()
 	print_debug("l:"+Gconst.config.save_file_path)
 	if not save_game.file_exists(Gconst.config.save_file_path):

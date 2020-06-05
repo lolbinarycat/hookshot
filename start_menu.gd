@@ -63,3 +63,9 @@ func _on_save_file_popup_file_selected(path):
 	save_config()
 #	print_debug(Gconst.config.save_file_path)
 	pass # Replace with function body.
+
+
+func _on_new_game_button_pressed():
+	Gconst.is_new_game = true
+	start_game()
+	pass # Replace with function body.

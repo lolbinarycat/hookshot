@@ -20,6 +20,7 @@ const TILES = {
 var config = {
 	"save_file_path" : "user://hookshot.save"
 }
+var is_new_game = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
