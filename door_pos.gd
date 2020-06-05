@@ -30,12 +30,14 @@ func save():
 func update_open_button_state():
 	if open_button_state == UNPRESSED:
 		open_button.get_node("CollisionShape2D").disabled = true
-		get_node("Sprite").visible = false
+		open_button.get_node("Sprite").visible = false
 	elif open_button_state == PRESSED:
 		open_button.get_node("CollisionShape2D").disabled = false
-		get_node("Sprite").visible = true
+		open_button.get_node("Sprite").visible = true
 
 func _ready():
+	update_door_state()
+	update_open_button_state()
 	pass # Replace with function body.
 
 func update_door_state():
@@ -57,3 +59,11 @@ func open_door():
 func _on_open_button_body_entered(body):
 	if body == get_node(Gconst.PLAYER_PATH):
 		open_door()
+	open_button_state = PRESSED
+	update_open_button_state()
+
+
+func _on_respawn_pos_game_loaded():
+#	update_door_state()
+#	update_open_button_state()
+	pass # Replace with function body.

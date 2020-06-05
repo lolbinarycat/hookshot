@@ -4,6 +4,7 @@ extends Position2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+signal game_loaded
 
 func save():  # this save fuction defines the variables to be saved for a node. every node to be saved will need one
 	var save_dict = {
@@ -78,7 +79,9 @@ func load_game(): #path independant
 			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
 				continue
 			node.set(i, node_data[i])
+			print_debug("saved: "+str(i)+" = "+str(node_data[i]))
 	save_game.close()
+	emit_signal("game_loaded")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	

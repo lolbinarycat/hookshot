@@ -888,6 +888,7 @@ color = Color( 1, 1, 1, 0.0980392 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
+[connection signal="game_loaded" from="WorldEnvironment/respawn_pos" to="WorldEnvironment/door_controller/door_pos" method="_on_respawn_pos_game_loaded"]
 [connection signal="stop_hs" from="WorldEnvironment/respawn_pos/Player" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_Player_stop_hs"]
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]
 [connection signal="hs_extend" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_extend"]
