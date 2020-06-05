@@ -40,6 +40,7 @@ func save_game(): #saves the game. can be called from anywhere in the tree
 
 		# Store the save dictionary as a new line in the save file
 		save_game.store_line(to_json(node_data))
+		print_debug("saved:",node_data)
 	save_game.close()
 
 func load_game(): #path independant
@@ -79,7 +80,7 @@ func load_game(): #path independant
 			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
 				continue
 			node.set(i, node_data[i])
-			print_debug("saved: "+str(i)+" = "+str(node_data[i]))
+			print_debug("loaded: "+str(i)+" = "+str(node_data[i]))
 	save_game.close()
 	emit_signal("game_loaded")
 # Called when the node enters the scene tree for the first time.

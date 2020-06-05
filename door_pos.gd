@@ -6,7 +6,7 @@ extends Position2D
 # var b = "text"
 
 enum {OPEN, CLOSED}
-var door_state = OPEN
+var door_state = CLOSED
 enum {PRESSED, UNPRESSED}
 var open_button_state = UNPRESSED
 # this is open_button to make it easyer to implement a close_button if i want to
@@ -29,11 +29,11 @@ func save():
 
 func update_open_button_state():
 	if open_button_state == UNPRESSED:
-		open_button.get_node("CollisionShape2D").disabled = true
-		open_button.get_node("Sprite").visible = false
-	elif open_button_state == PRESSED:
 		open_button.get_node("CollisionShape2D").disabled = false
 		open_button.get_node("Sprite").visible = true
+	elif open_button_state == PRESSED:
+		open_button.get_node("CollisionShape2D").disabled = true
+		open_button.get_node("Sprite").visible = false
 
 func _ready():
 	update_door_state()

@@ -7,7 +7,7 @@ const JUMP_MOMENTUM_BOOST = 70 # how much
 const JUMP_MOMENTUM_BOOST_SPEED = 200
 const WALL_JUMP_HEIGHT = 400
 const WALL_JUMP_WIDTH = 250
-const WALL_JUMP_MIN_HEIGHT = 200
+const WALL_JUMP_MIN_HEIGHT = 250
 const RUN_SPEED = 30#80
 const FRICTION = 5.2#1.2#1.14
 const AIR_FRICTION = 1.00
@@ -144,6 +144,8 @@ func crouch_process():
 			crouching = true
 		else:
 			crouching = false
+		if get_tile_under() == Gconst.TILES["top_half"]:
+			crouching = true
 	get_node("normal_hitbox").disabled = crouching
 	get_node("normal_hitbox").visible = !crouching
 	

@@ -14,7 +14,8 @@ const SAVE_FILE_PATH = "user://hookshot.save"
 const CONFIG_FILE_PATH = "user://hookshot.config"
 const TILES = {
 	"spikes" : 2,
-	"checkpoint" : 3
+	"checkpoint" : 3,
+	"top_half" : 7
 }
 #var player = get_root()
 var config = {

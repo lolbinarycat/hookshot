@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://player_new.png" type="Texture" id=2]
@@ -20,14 +20,13 @@
 [ext_resource path="res://pause_menu.gd" type="Script" id=18]
 [ext_resource path="res://red_wire.png" type="Texture" id=19]
 [ext_resource path="res://door.png" type="Texture" id=20]
-[ext_resource path="res://button.png" type="Texture" id=21]
+[ext_resource path="res://door_pos.tscn" type="PackedScene" id=21]
 [ext_resource path="res://wall_top_half.png" type="Texture" id=22]
 [ext_resource path="res://start_menu.gd" type="Script" id=25]
 [ext_resource path="res://player_croutch.png" type="Texture" id=26]
 [ext_resource path="res://eye.png" type="Texture" id=27]
 [ext_resource path="res://movement_particles.gd" type="Script" id=28]
 [ext_resource path="res://touch_buttons.gd" type="Script" id=29]
-[ext_resource path="res://door_pos.gd" type="Script" id=30]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 8, 8, 0, 8, 0, 0, 8, 0 )
@@ -263,12 +262,6 @@ extents = Vector2( 496, 592 )
 
 [sub_resource type="RectangleShape2D" id=15]
 extents = Vector2( 496, 1200 )
-
-[sub_resource type="RectangleShape2D" id=16]
-extents = Vector2( 16, 14 )
-
-[sub_resource type="RectangleShape2D" id=17]
-extents = Vector2( 16, 64 )
 
 [sub_resource type="InputEventAction" id=18]
 action = "ui_end"
@@ -542,51 +535,13 @@ shape = SubResource( 13 )
 
 [node name="door_controller" type="Node" parent="WorldEnvironment"]
 
-[node name="door_pos" type="Position2D" parent="WorldEnvironment/door_controller" groups=[
-"Persist",
-]]
-position = Vector2( 2688, 928 )
-script = ExtResource( 30 )
+[node name="door_pos" parent="WorldEnvironment/door_controller" instance=ExtResource( 21 )]
 
-[node name="open_button" type="Area2D" parent="WorldEnvironment/door_controller/door_pos"]
-position = Vector2( 1902, -14 )
+[node name="door_pos2" parent="WorldEnvironment/door_controller" instance=ExtResource( 21 )]
+position = Vector2( 2192, 3392 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/door_controller/door_pos/open_button"]
-shape = SubResource( 16 )
-
-[node name="Sprite" type="Sprite" parent="WorldEnvironment/door_controller/door_pos/open_button"]
-scale = Vector2( 3.99998, 4 )
-texture = ExtResource( 21 )
-region_enabled = true
-region_rect = Rect2( 0, 1, 8, 7 )
-
-[node name="door" type="StaticBody2D" parent="WorldEnvironment/door_controller/door_pos"]
-position = Vector2( 16, 128 )
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/door_controller/door_pos/door"]
-shape = SubResource( 17 )
-
-[node name="top_sprite" type="Sprite" parent="WorldEnvironment/door_controller/door_pos/door"]
-position = Vector2( 0, -31 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 20 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 8, 16 )
-
-[node name="bottom_sprite" type="Sprite" parent="WorldEnvironment/door_controller/door_pos/door"]
-position = Vector2( 0, 32 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 20 )
-region_enabled = true
-region_rect = Rect2( 0, 8, 8, 16 )
-
-[node name="open_pos" type="Position2D" parent="WorldEnvironment/door_controller/door_pos"]
-position = Vector2( 16, 64 )
-
-[node name="closed_pos" type="Position2D" parent="WorldEnvironment/door_controller/door_pos"]
-position = Vector2( 16, 128 )
+[node name="open_button" parent="WorldEnvironment/door_controller/door_pos2" index="0"]
+position = Vector2( 208, 192 )
 
 [node name="death_particles" type="CPUParticles2D" parent="WorldEnvironment"]
 position = Vector2( 512, 304 )
@@ -707,14 +662,6 @@ margin_top = 192.0
 margin_right = 128.0
 margin_bottom = 224.0
 text = "Quit"
-
-[node name="save_toggle" type="CheckBox" parent="UIlayer/start_menu"]
-margin_left = 608.0
-margin_top = 272.0
-margin_right = 736.0
-margin_bottom = 304.0
-pressed = true
-text = "disable saving"
 
 [node name="pause_menu" type="Panel" parent="UIlayer"]
 pause_mode = 2
@@ -913,7 +860,6 @@ color = Color( 1, 1, 1, 0.0980392 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
-[connection signal="game_loaded" from="WorldEnvironment/respawn_pos" to="WorldEnvironment/door_controller/door_pos" method="_on_respawn_pos_game_loaded"]
 [connection signal="stop_hs" from="WorldEnvironment/respawn_pos/Player" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_Player_stop_hs"]
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]
 [connection signal="hs_extend" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_extend"]
@@ -932,7 +878,6 @@ __meta__ = {
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds9" to="WorldEnvironment/camera_bounds/camera_bounds9" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds6" to="WorldEnvironment/camera_bounds/camera_bounds6" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds8" to="WorldEnvironment/camera_bounds/camera_bounds8" method="_on_camera_bounds_body_entered"]
-[connection signal="body_entered" from="WorldEnvironment/door_controller/door_pos/open_button" to="WorldEnvironment/door_controller/door_pos" method="_on_open_button_body_entered"]
 [connection signal="script_changed" from="UIlayer/debugger" to="UIlayer/debugger" method="_on_debugger_script_changed"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="WorldEnvironment/respawn_pos" method="_on_start_button_button_up"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="UIlayer/start_menu" method="_on_start_button_button_up"]
@@ -944,3 +889,5 @@ __meta__ = {
 [connection signal="button_up" from="UIlayer/pause_menu/ret_to_start_button" to="UIlayer/pause_menu" method="_on_Button2_button_up"]
 [connection signal="button_down" from="UIlayer/pause_menu/resume_button" to="UIlayer/pause_menu" method="_on_resume_button_button_down"]
 [connection signal="pressed" from="UIlayer/pause_menu/ret_to_title_button" to="UIlayer/pause_menu" method="_on_ret_to_title_button_pressed"]
+
+[editable path="WorldEnvironment/door_controller/door_pos2"]
