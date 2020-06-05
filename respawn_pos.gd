@@ -68,14 +68,16 @@ func load_game(): #path independant
 		#get_node(node_data["parent"]).add_child(new_object)
 		var node = get_node(node_data["path"])
 		node.position = Vector2(node_data["pos_x"], node_data["pos_y"])
-
+		
+#		if node.get(door_state) != null:
+#			node.door_state = node_data[]
 #		if node_data["custom_load_function"]:
 #			node.load_node(node_data)
 		# Now we set the remaining variables.
-#		for i in node_data.keys():
-#			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
-#				continue
-#			new_object.set(i, node_data[i])
+		for i in node_data.keys():
+			if i == "filename" or i == "parent" or i == "pos_x" or i == "pos_y":
+				continue
+			node.set(i, node_data[i])
 	save_game.close()
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://player_new.png" type="Texture" id=2]
@@ -21,8 +21,6 @@
 [ext_resource path="res://red_wire.png" type="Texture" id=19]
 [ext_resource path="res://door.png" type="Texture" id=20]
 [ext_resource path="res://button.png" type="Texture" id=21]
-[ext_resource path="res://door.gd" type="Script" id=22]
-[ext_resource path="res://Button.gd" type="Script" id=23]
 [ext_resource path="res://start_menu.gd" type="Script" id=25]
 [ext_resource path="res://player_croutch.png" type="Texture" id=26]
 [ext_resource path="res://eye.png" type="Texture" id=27]
@@ -298,6 +296,9 @@ __meta__ = {
 ]]
 position = Vector2( 512, 304 )
 script = ExtResource( 15 )
+__meta__ = {
+"_editor_description_": "as well as this node's position storing the player's respawn position, its script contains the code for saving and loading (from a save file) the game."
+}
 
 [node name="Player" type="KinematicBody2D" parent="WorldEnvironment/respawn_pos"]
 scale = Vector2( 2, 2 )
@@ -516,13 +517,14 @@ shape = SubResource( 13 )
 
 [node name="door_controller" type="Node" parent="WorldEnvironment"]
 
-[node name="door_pos" type="Position2D" parent="WorldEnvironment/door_controller"]
+[node name="door_pos" type="Position2D" parent="WorldEnvironment/door_controller" groups=[
+"Persist",
+]]
 position = Vector2( 2688, 928 )
 script = ExtResource( 30 )
 
 [node name="open_button" type="Area2D" parent="WorldEnvironment/door_controller/door_pos"]
 position = Vector2( 1902, -14 )
-script = ExtResource( 23 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/door_controller/door_pos/open_button"]
 shape = SubResource( 16 )
@@ -533,13 +535,10 @@ texture = ExtResource( 21 )
 region_enabled = true
 region_rect = Rect2( 0, 1, 8, 7 )
 
-[node name="door" type="StaticBody2D" parent="WorldEnvironment/door_controller/door_pos" groups=[
-"Persist",
-]]
+[node name="door" type="StaticBody2D" parent="WorldEnvironment/door_controller/door_pos"]
 position = Vector2( 16, 128 )
 collision_layer = 3
 collision_mask = 3
-script = ExtResource( 22 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/door_controller/door_pos/door"]
 shape = SubResource( 17 )
@@ -907,7 +906,7 @@ __meta__ = {
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds9" to="WorldEnvironment/camera_bounds/camera_bounds9" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds6" to="WorldEnvironment/camera_bounds/camera_bounds6" method="_on_camera_bounds_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/camera_bounds/camera_bounds8" to="WorldEnvironment/camera_bounds/camera_bounds8" method="_on_camera_bounds_body_entered"]
-[connection signal="body_entered" from="WorldEnvironment/door_controller/door_pos/open_button" to="WorldEnvironment/door_controller/door_pos/door" method="_on_Button_body_entered"]
+[connection signal="body_entered" from="WorldEnvironment/door_controller/door_pos/open_button" to="WorldEnvironment/door_controller/door_pos" method="_on_open_button_body_entered"]
 [connection signal="script_changed" from="UIlayer/debugger" to="UIlayer/debugger" method="_on_debugger_script_changed"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="WorldEnvironment/respawn_pos" method="_on_start_button_button_up"]
 [connection signal="button_up" from="UIlayer/start_menu/button_align/start_button" to="UIlayer/start_menu" method="_on_start_button_button_up"]
