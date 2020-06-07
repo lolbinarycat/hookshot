@@ -3,10 +3,20 @@ extends KinematicBody2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-signal hs_hit 
+signal hs_hit
 #enum {LEFT,RIGHT,UP,DOWN}
+
+onready var hs = get_parent()
+
 var hs_dir #= get_parent()
 var collision
+
+# this disables collision for an amount of time at the start of the hookshot extention to
+# stop a glitch that caused the hookshot to hit a surface in the opposite direction of
+# the hookshot (e.g. hitting the floor when shooting upwards)
+const NOCOLLISION_DURATION = 0.1
+var nocollision_timer
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -17,7 +27,11 @@ func _ready():
 #	pass
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	if get_parent().hs_state == 1:
+	if hs.hs_state == hs.STARTING:
+		nocollision_timer = NOCOLLISION_DURATION
+	elif hs.hs_state == hs.EXTENDING and nocollision_timer > 0:
+		nocollision_timer -= delta
+	elif hs.hs_state == hs.EXTENDING and nocollision_timer <= 0:
 		hs_dir = get_parent().hs_dir
 		if hs_dir == Gconst.RIGHT:
 			position.x = -10

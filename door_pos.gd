@@ -59,7 +59,7 @@ func open_door():
 func _on_open_button_body_entered(body):
 	if body == get_node(Gconst.PLAYER_PATH):
 		open_door()
-	open_button_state = PRESSED
+		open_button_state = PRESSED
 	update_open_button_state()
 
 

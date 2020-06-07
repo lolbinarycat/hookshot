@@ -9,7 +9,7 @@ const WALL_JUMP_HEIGHT = 400
 const WALL_JUMP_WIDTH = 250
 const WALL_JUMP_MIN_HEIGHT = 250
 const RUN_SPEED = 30#80
-const FRICTION = 5.2#1.2#1.14
+const FRICTION = 4.0#5.2#1.2#1.14
 const AIR_FRICTION = 1.00
 const MAX_AIR_SPEED = 200
 const AIR_SPEED = 15
@@ -275,6 +275,8 @@ func _physics_process(delta):
 			frict = FRICTION
 			if crouching:
 				frict = frict*4
+#			elif Input.is_action_pressed("ui_up"):
+#				frict = frict
 			
 		elif timeFromGround > 0:
 			frict = AIR_FRICTION

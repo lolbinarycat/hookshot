@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://player_new.png" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://door.png" type="Texture" id=20]
 [ext_resource path="res://door_pos.tscn" type="PackedScene" id=21]
 [ext_resource path="res://wall_top_half.png" type="Texture" id=22]
+[ext_resource path="res://camera_tween.gd" type="Script" id=23]
 [ext_resource path="res://start_menu.gd" type="Script" id=25]
 [ext_resource path="res://player_croutch.png" type="Texture" id=26]
 [ext_resource path="res://eye.png" type="Texture" id=27]
@@ -40,10 +41,10 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 [sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 
-[sub_resource type="ConvexPolygonShape2D" id=23]
+[sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 3, 0, 3 )
 
-[sub_resource type="TileSet" id=5]
+[sub_resource type="TileSet" id=6]
 0/name = "wall.png 0"
 0/texture = ExtResource( 4 )
 0/tex_offset = Vector2( 0, 0 )
@@ -180,19 +181,19 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 3, 0, 3 )
 7/navigation_offset = Vector2( 0, 0 )
 7/shape_offset = Vector2( 0, 0 )
 7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-7/shape = SubResource( 23 )
+7/shape = SubResource( 5 )
 7/shape_one_way = false
 7/shape_one_way_margin = 1.0
 7/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 23 ),
+"shape": SubResource( 5 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 7/z_index = 0
 
-[sub_resource type="TileSet" id=6]
+[sub_resource type="TileSet" id=7]
 0/name = "red_wire.png 0"
 0/texture = ExtResource( 19 )
 0/tex_offset = Vector2( 0, 0 )
@@ -236,45 +237,45 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 3, 0, 3 )
 2/shapes = [  ]
 2/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 6, 4.5 )
 
-[sub_resource type="RectangleShape2D" id=8]
+[sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 6, 6 )
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 2.5, 2.5 )
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 197, 23 )
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 448, 8 )
 
-[sub_resource type="RectangleShape2D" id=12]
+[sub_resource type="RectangleShape2D" id=13]
 extents = Vector2( 864, 16 )
 
-[sub_resource type="RectangleShape2D" id=13]
+[sub_resource type="RectangleShape2D" id=14]
 extents = Vector2( 496, 288 )
 
-[sub_resource type="RectangleShape2D" id=14]
+[sub_resource type="RectangleShape2D" id=15]
 extents = Vector2( 496, 592 )
 
-[sub_resource type="RectangleShape2D" id=15]
+[sub_resource type="RectangleShape2D" id=16]
 extents = Vector2( 496, 1200 )
 
-[sub_resource type="InputEventAction" id=18]
+[sub_resource type="InputEventAction" id=17]
 action = "ui_end"
 
-[sub_resource type="ShortCut" id=19]
-shortcut = SubResource( 18 )
+[sub_resource type="ShortCut" id=18]
+shortcut = SubResource( 17 )
 
-[sub_resource type="CanvasItemMaterial" id=20]
+[sub_resource type="CanvasItemMaterial" id=19]
 
-[sub_resource type="RectangleShape2D" id=21]
+[sub_resource type="RectangleShape2D" id=20]
 extents = Vector2( 16, 16 )
 
-[sub_resource type="CanvasItemMaterial" id=22]
+[sub_resource type="CanvasItemMaterial" id=21]
 
 [node name="Node2D" type="Node2D"]
 __meta__ = {
@@ -289,7 +290,7 @@ script = ExtResource( 3 )
 [node name="TileMap" type="TileMap" parent="WorldEnvironment"]
 scale = Vector2( 4, 4 )
 z_as_relative = false
-tile_set = SubResource( 5 )
+tile_set = SubResource( 6 )
 cell_size = Vector2( 8, 8 )
 collision_layer = 3
 collision_mask = 3
@@ -301,7 +302,7 @@ __meta__ = {
 
 [node name="TileMap2" type="TileMap" parent="WorldEnvironment"]
 scale = Vector2( 4, 4 )
-tile_set = SubResource( 6 )
+tile_set = SubResource( 7 )
 cell_size = Vector2( 8, 8 )
 format = 1
 tile_data = PoolIntArray( 1900687, -1073741823, 0, 1966203, 0, 0, 1966204, 1, 0, 1966205, 1, 0, 1966206, 1, 0, 1966207, 1, 0, 1966208, 1, 0, 1966209, 1, 0, 1966210, 1, 0, 1966211, 1, 0, 1966212, 1, 0, 1966213, 1, 0, 1966214, 1, 0, 1966215, 1, 0, 1966216, 536870913, 0, 1966217, 536870913, 0, 1966218, -1610612736, 0, 1966223, -1073741823, 0, 1966227, 1610612738, 0, 1966228, 1610612737, 0, 1966229, 1610612737, 0, 1966230, -1073741822, 0, 2031699, 1610612738, 0, 2031739, -1073741823, 0, 2031754, -536870911, 0, 2031759, -1073741823, 0, 2031763, -1610612735, 0, 2031766, -1073741823, 0, 2097235, -1610612735, 0, 2097275, 1073741824, 0, 2097276, 1073741825, 0, 2097277, 1073741825, 0, 2097278, 1073741825, 0, 2097279, 1073741825, 0, 2097280, -1073741822, 0, 2097290, -536870911, 0, 2097295, -1073741824, 0, 2097296, 1610612737, 0, 2097297, 1610612737, 0, 2097298, 1610612737, 0, 2097299, 1610612736, 0, 2097302, -1073741823, 0, 2162771, -1610612735, 0, 2162812, -2147483648, 0, 2162813, 536870913, 0, 2162814, 536870913, 0, 2162815, 536870913, 0, 2162816, -2147483646, 0, 2162826, -1610612735, 0, 2162838, -1073741823, 0, 2228307, -1610612735, 0, 2228348, 1073741824, 0, 2228349, 1073741825, 0, 2228350, 1073741826, 0, 2228362, -1610612735, 0, 2228374, -1073741823, 0, 2293843, -1610612735, 0, 2293886, -2147483647, 0, 2293898, -1610612734, 0, 2293899, 1, 0, 2293900, 1, 0, 2293901, 1, 0, 2293902, 1, 0, 2293903, 1, 0, 2293904, 1, 0, 2293905, 1, 0, 2293906, 1, 0, 2293907, 1, 0, 2293908, 1, 0, 2293909, 1, 0, 2293910, 2, 0, 2359379, -1610612734, 0, 2359380, 1, 0, 2359381, 1, 0, 2359382, 536870913, 0, 2359383, 536870913, 0, 2359384, 536870913, 0, 2359385, 536870913, 0, 2359386, 536870913, 0, 2359387, 536870913, 0, 2359388, 536870913, 0, 2359389, 536870913, 0, 2359390, 536870913, 0, 2359391, 536870913, 0, 2359392, 536870913, 0, 2359393, 536870913, 0, 2359394, 536870913, 0, 2359395, 536870913, 0, 2359396, 536870913, 0, 2359397, 536870913, 0, 2359398, 536870913, 0, 2359399, 536870913, 0, 2359400, 536870913, 0, 2359401, 536870913, 0, 2359402, 536870913, 0, 2359403, 536870913, 0, 2359404, 536870913, 0, 2359405, 536870913, 0, 2359406, 536870913, 0, 2359407, 536870913, 0, 2359408, 536870913, 0, 2359409, 536870913, 0, 2359410, 536870913, 0, 2359411, 536870913, 0, 2359412, 536870913, 0, 2359413, 536870913, 0, 2359414, 536870913, 0, 2359415, 536870913, 0, 2359416, 536870913, 0, 2359417, 536870913, 0, 2359418, 536870913, 0, 2359419, 536870913, 0, 2359420, 536870913, 0, 2359421, 536870913, 0, 2359422, -2147483646, 0 )
@@ -328,25 +329,19 @@ __meta__ = {
 
 [node name="crouch_hitbox" type="CollisionShape2D" parent="WorldEnvironment/respawn_pos/Player"]
 position = Vector2( 0, 1.5 )
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="crouch_sprite" type="Sprite" parent="WorldEnvironment/respawn_pos/Player/crouch_hitbox"]
 position = Vector2( 0, -3.5 )
 texture = ExtResource( 26 )
 
 [node name="normal_hitbox" type="CollisionShape2D" parent="WorldEnvironment/respawn_pos/Player"]
-shape = SubResource( 8 )
+shape = SubResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="WorldEnvironment/respawn_pos/Player/normal_hitbox"]
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 2, 4, 12, 12 )
-
-[node name="Camera2D" type="Camera2D" parent="WorldEnvironment/respawn_pos/Player"]
-current = true
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="hookshot" type="Position2D" parent="WorldEnvironment/respawn_pos/Player"]
 show_behind_parent = true
@@ -375,7 +370,7 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/respawn_pos/Player/hookshot/hs_head"]
 z_as_relative = false
-shape = SubResource( 9 )
+shape = SubResource( 10 )
 
 [node name="hs_head_sprite" type="Sprite" parent="WorldEnvironment/respawn_pos/Player/hookshot"]
 z_index = -1
@@ -405,6 +400,17 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 10.0
 script = ExtResource( 28 )
 
+[node name="Camera2D" type="Camera2D" parent="WorldEnvironment/respawn_pos/Player"]
+current = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Tween" type="Tween" parent="WorldEnvironment/respawn_pos/Player/Camera2D"]
+playback_speed = 0.1
+playback/speed = 0.1
+script = ExtResource( 23 )
+
 [node name="death_planes" type="Node" parent="WorldEnvironment"]
 
 [node name="death_plane" type="Area2D" parent="WorldEnvironment/death_planes"]
@@ -413,14 +419,14 @@ script = ExtResource( 13 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/death_planes/death_plane"]
 position = Vector2( 12, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="death_plane2" type="Area2D" parent="WorldEnvironment/death_planes"]
 position = Vector2( 1536, 640 )
 script = ExtResource( 13 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/death_planes/death_plane2"]
-shape = SubResource( 11 )
+shape = SubResource( 12 )
 
 [node name="death_plane3" type="Area2D" parent="WorldEnvironment/death_planes"]
 position = Vector2( 1597, 1226 )
@@ -428,10 +434,9 @@ rotation = 2.60151e-05
 script = ExtResource( 13 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/death_planes/death_plane3"]
-shape = SubResource( 12 )
+shape = SubResource( 13 )
 
 [node name="camera_bounds" type="Node2D" parent="WorldEnvironment"]
-visible = false
 __meta__ = {
 "_edit_lock_": true
 }
@@ -444,7 +449,7 @@ script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds"]
 position = Vector2( -2, 0 )
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -456,7 +461,7 @@ position = Vector2( 510, 912 )
 script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds2"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="camera_bounds3" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -465,7 +470,7 @@ position = Vector2( 1536, 912 )
 script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds3"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="camera_bounds4" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -477,7 +482,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds4"]
-shape = SubResource( 14 )
+shape = SubResource( 15 )
 
 [node name="camera_bounds7" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -489,7 +494,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds7"]
-shape = SubResource( 15 )
+shape = SubResource( 16 )
 
 [node name="camera_bounds5" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -498,7 +503,7 @@ position = Vector2( 3584, 912 )
 script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds5"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="camera_bounds9" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -507,7 +512,7 @@ position = Vector2( 4608, 3344 )
 script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds9"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="camera_bounds6" type="Area2D" parent="WorldEnvironment/camera_bounds" groups=[
 "camera_bounds_group",
@@ -519,7 +524,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds6"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -531,7 +536,7 @@ position = Vector2( 3584, 3344 )
 script = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldEnvironment/camera_bounds/camera_bounds8"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="door_controller" type="Node" parent="WorldEnvironment"]
 
@@ -541,7 +546,7 @@ shape = SubResource( 13 )
 position = Vector2( 2192, 3392 )
 
 [node name="open_button" parent="WorldEnvironment/door_controller/door_pos2" index="0"]
-position = Vector2( 208, 192 )
+position = Vector2( 154, 177 )
 
 [node name="death_particles" type="CPUParticles2D" parent="WorldEnvironment"]
 position = Vector2( 512, 304 )
@@ -588,6 +593,7 @@ __meta__ = {
 
 [node name="start_menu" type="Panel" parent="UIlayer"]
 pause_mode = 2
+visible = false
 margin_right = 1024.0
 margin_bottom = 608.0
 script = ExtResource( 25 )
@@ -621,6 +627,8 @@ __meta__ = {
 [node name="start_button" type="Button" parent="UIlayer/start_menu/button_align"]
 margin_right = 128.0
 margin_bottom = 32.0
+focus_neighbour_bottom = NodePath("../new_game_button")
+focus_next = NodePath("../new_game_button")
 text = "Continue Game"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -630,6 +638,10 @@ __meta__ = {
 margin_top = 64.0
 margin_right = 128.0
 margin_bottom = 96.0
+focus_neighbour_top = NodePath("../start_button")
+focus_neighbour_bottom = NodePath("../save_file_button")
+focus_next = NodePath("../save_file_button")
+focus_previous = NodePath("../start_button")
 text = "New Game"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -639,6 +651,10 @@ __meta__ = {
 margin_top = 128.0
 margin_right = 128.0
 margin_bottom = 160.0
+focus_neighbour_top = NodePath("../new_game_button")
+focus_neighbour_bottom = NodePath("../quit_button")
+focus_next = NodePath("../quit_button")
+focus_previous = NodePath("../new_game_button")
 text = "change save file"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -661,6 +677,8 @@ current_path = "user://hookshot.save"
 margin_top = 192.0
 margin_right = 128.0
 margin_bottom = 224.0
+focus_neighbour_top = NodePath("../save_file_button")
+focus_previous = NodePath("../save_file_button")
 text = "Quit"
 
 [node name="pause_menu" type="Panel" parent="UIlayer"]
@@ -692,7 +710,7 @@ margin_left = 256.0
 margin_top = 192.0
 margin_right = 384.0
 margin_bottom = 224.0
-shortcut = SubResource( 19 )
+shortcut = SubResource( 18 )
 text = "Quit (ESC)"
 
 [node name="ret_to_start_button" type="Button" parent="UIlayer/pause_menu"]
@@ -727,10 +745,10 @@ visible = false
 script = ExtResource( 29 )
 
 [node name="jump" type="TouchScreenButton" parent="UIlayer/touch_buttons"]
-material = SubResource( 20 )
+material = SubResource( 19 )
 position = Vector2( 96, 416 )
 scale = Vector2( 3, 3 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 action = "jump"
 visibility_mode = 1
 
@@ -743,9 +761,9 @@ __meta__ = {
 }
 
 [node name="pause" type="TouchScreenButton" parent="UIlayer/touch_buttons"]
-material = SubResource( 20 )
+material = SubResource( 19 )
 position = Vector2( 960, 32 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 action = "pause"
 visibility_mode = 1
 
@@ -760,7 +778,7 @@ __meta__ = {
 [node name="hookshot" type="TouchScreenButton" parent="UIlayer/touch_buttons"]
 position = Vector2( 224, 416 )
 scale = Vector2( 3, 3 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 action = "hookshot"
 visibility_mode = 1
 
@@ -774,10 +792,10 @@ __meta__ = {
 }
 
 [node name="climb" type="TouchScreenButton" parent="UIlayer/touch_buttons"]
-material = SubResource( 22 )
+material = SubResource( 21 )
 position = Vector2( 96, 288 )
 scale = Vector2( 3, 3 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 passby_press = true
 action = "climb"
 visibility_mode = 1
@@ -798,7 +816,7 @@ scale = Vector2( 0.533, 0.533 )
 [node name="right" type="TouchScreenButton" parent="UIlayer/touch_buttons/directions"]
 position = Vector2( 320, 0 )
 scale = Vector2( 5, 15 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 passby_press = true
 action = "ui_right"
 visibility_mode = 1
@@ -814,7 +832,7 @@ __meta__ = {
 
 [node name="up" type="TouchScreenButton" parent="UIlayer/touch_buttons/directions"]
 scale = Vector2( 15, 5 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 passby_press = true
 action = "ui_up"
 visibility_mode = 1
@@ -830,7 +848,7 @@ __meta__ = {
 [node name="down" type="TouchScreenButton" parent="UIlayer/touch_buttons/directions"]
 position = Vector2( 0, 320 )
 scale = Vector2( 15, 5 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 passby_press = true
 action = "ui_down"
 visibility_mode = 1
@@ -848,7 +866,7 @@ __meta__ = {
 [node name="left" type="TouchScreenButton" parent="UIlayer/touch_buttons/directions"]
 position = Vector2( 6.10352e-05, 0 )
 scale = Vector2( 5, 15 )
-shape = SubResource( 21 )
+shape = SubResource( 20 )
 passby_press = true
 action = "ui_left"
 visibility_mode = 1
@@ -864,8 +882,8 @@ __meta__ = {
 [connection signal="hs_cancel" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_cancel"]
 [connection signal="hs_extend" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_extend"]
 [connection signal="hs_miss" from="WorldEnvironment/respawn_pos/Player/hookshot" to="WorldEnvironment/respawn_pos/Player" method="_on_hookshot_hs_miss"]
-[connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_hookshot_head_hs_hit"]
 [connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player" method="_on_hs_head_hs_hit"]
+[connection signal="hs_hit" from="WorldEnvironment/respawn_pos/Player/hookshot/hs_head" to="WorldEnvironment/respawn_pos/Player/hookshot" method="_on_hookshot_head_hs_hit"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane" to="WorldEnvironment/respawn_pos/Player" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane2" to="WorldEnvironment/death_planes/death_plane2" method="_on_death_plane_body_entered"]
 [connection signal="body_entered" from="WorldEnvironment/death_planes/death_plane3" to="WorldEnvironment/death_planes/death_plane3" method="_on_death_plane_body_entered"]

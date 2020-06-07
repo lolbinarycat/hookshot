@@ -4,7 +4,7 @@ const MAX_RANGE = 800
 const MAX_TIME = 1.5
 const MIN_SPEED = 140
 const START_WINDOW_TIME = 0.08#5/60.0
-const HS_THROW_FRIC = 3
+const HS_THROW_FRIC = 2.5
 const END_SLIDE_DURATION = 0.1
 
 signal hs_extend #sent when the hookshot enters the extention state

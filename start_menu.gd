@@ -33,6 +33,7 @@ func start_game():
 func _ready():
 	load_config()
 	visible = true
+	get_node("button_align/start_button").grab_focus()
 	#apply config to save_file_popup
 	pass # Replace with function body.
 
